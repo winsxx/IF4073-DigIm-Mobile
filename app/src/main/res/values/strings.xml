@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">DigIm</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="home_title">Image Equalization</string>
     <string name="action_settings">Settings</string>
 
 </resources>
