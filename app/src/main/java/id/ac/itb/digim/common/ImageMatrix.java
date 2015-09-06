@@ -4,12 +4,12 @@ import id.ac.itb.digim.common.color.Color;
 
 public class ImageMatrix<ColorType extends Color> {
 
-    private Color[][] matrix;
+    private Color[][] pixels;
     private int height;
     private int width;
 
     public ImageMatrix(int height, int width) {
-        matrix = new Color[height][width];
+        pixels = new Color[height][width];
         this.height = height;
         this.width = width;
     }
@@ -22,12 +22,12 @@ public class ImageMatrix<ColorType extends Color> {
         return this.height;
     }
 
-    public void setColor(int row, int col, ColorType color){
-        matrix[row][col] = color;
+    public void setPixel(int row, int col, ColorType color){
+        pixels[row][col] = color;
     }
 
-    public ColorType getColor(int row, int col){
-        return (ColorType) matrix[row][col];
+    public ColorType getPixel(int row, int col){
+        return (ColorType) pixels[row][col];
     }
 
 }

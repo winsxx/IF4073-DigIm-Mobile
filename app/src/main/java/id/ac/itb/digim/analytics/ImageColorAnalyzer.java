@@ -14,7 +14,7 @@ public class ImageColorAnalyzer {
 
         int[] matrixTemp = new int[imageSize];
         for(int i=0; i<imageSize; i++) {
-            Color color = image.getColor(i/imageWidth, i%imageWidth);
+            Color color = image.getPixel(i / imageWidth, i % imageWidth);
             matrixTemp[i] = color.getColor();
         }
 
