@@ -2,6 +2,10 @@ package id.ac.itb.digim.common.color;
 
 public class RgbColor extends Color {
 
+    public RgbColor(){
+        super(0);
+    }
+
     public RgbColor(int color) {
         super(color);
     }
@@ -11,9 +15,6 @@ public class RgbColor extends Color {
     }
 
     public void setRed(int r) {
-        if ((0 <= r) && (r < 256)) {
-            throw new IllegalArgumentException("Color value should be between 0 and 256");
-        }
         color = color & (0xFF00FFFF | r << 15);
     }
 
@@ -22,9 +23,6 @@ public class RgbColor extends Color {
     }
 
     public void setGreen(int g) {
-        if ((0 <= g) && (g < 256)) {
-            throw new IllegalArgumentException("Color value should be between 0 and 256");
-        }
         color = color & (0xFFFF00FF | g << 7);
     }
 
@@ -33,9 +31,6 @@ public class RgbColor extends Color {
     }
 
     public void setBlue(int b) {
-        if ((0 <= b) && (b < 256)) {
-            throw new IllegalArgumentException("Color value should be between 0 and 256");
-        }
         color = color & (0xFFFFFF00 | b);
     }
 
