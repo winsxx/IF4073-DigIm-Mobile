@@ -6,10 +6,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
@@ -18,15 +16,23 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import id.ac.itb.digim.analytics.equalizer.GreyscaleCumulativeEqualizer;
+import id.ac.itb.digim.common.ImageMatrix;
+import id.ac.itb.digim.common.color.GreyscaleColor;
+import id.ac.itb.digim.converter.ImageConverter;
+
 
 public class MainActivity extends ActionBarActivity implements SeekBar.OnSeekBarChangeListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int MAX_VALUE_SEEKBAR = 16777215;
+    static final int MAX_VALUE_SEEKBAR = 100;
 
     String mCurrentPhotoPath;
     ImageView image;
     SeekBar seekBar;
     int progress;
+
+    ImageMatrix<GreyscaleColor> mGreyscaleImageMatrix;
+    GreyscaleCumulativeEqualizer greyscaleCumulativeEqualizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,8 @@ public class MainActivity extends ActionBarActivity implements SeekBar.OnSeekBar
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mGreyscaleImageMatrix = ImageConverter.toGreyscaleMatrix(imageBitmap);
+            imageBitmap = ImageConverter.toBitmap(mGreyscaleImageMatrix);
             image.setImageBitmap(imageBitmap);
         }
     }
@@ -75,10 +83,16 @@ public class MainActivity extends ActionBarActivity implements SeekBar.OnSeekBar
     @Override
     public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
         progress = progressValue;
+        float progressReal = (float)progress / MAX_VALUE_SEEKBAR;
 
-        // for testing purpose
-        // TODO change to Image Equalization
-        image.setColorFilter(-1*progress);
+        // for testing purpose MAX_VALUE_SEEKBAR
+        if(greyscaleCumulativeEqualizer == null && mGreyscaleImageMatrix != null){
+            greyscaleCumulativeEqualizer = new GreyscaleCumulativeEqualizer(mGreyscaleImageMatrix);
+        }
+        if(greyscaleCumulativeEqualizer != null){
+            mGreyscaleImageMatrix = greyscaleCumulativeEqualizer.getScaledEqualizedImageMatrix(progressReal);
+            image.setImageBitmap(ImageConverter.toBitmap(mGreyscaleImageMatrix));
+        }
     }
 
     @Override

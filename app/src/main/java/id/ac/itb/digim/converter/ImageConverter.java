@@ -1,6 +1,7 @@
 package id.ac.itb.digim.converter;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.GreyscaleColor;

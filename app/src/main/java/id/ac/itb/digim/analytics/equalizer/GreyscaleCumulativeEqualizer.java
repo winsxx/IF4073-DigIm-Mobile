@@ -64,13 +64,14 @@ public class GreyscaleCumulativeEqualizer implements Equalizer<GreyscaleColor> {
 
         for (int i = 0; i < equalizedImageMatrix.getHeight(); ++i) {
             for (int j = 0; j < equalizedImageMatrix.getWidth(); ++j) {
-                GreyscaleColor color = ans.getPixel(i, j);
-                color.setGrey((int) ((double) color.getGrey() * scale));
+                GreyscaleColor color = new GreyscaleColor();
+                int grey = (int) (equalizedImageMatrix.getPixel(i,j).getGrey() * scale);
+                color.setGrey(grey);
                 ans.setPixel(i, j, color);
             }
         }
         return ans;
     }
-    
+
 }
 
