@@ -11,19 +11,19 @@ public class RgbaColor extends Color {
     }
 
     public int getRed() {
-        return (color >> 15) & 0xFF;
+        return (color >> 16) & 0xFF;
     }
 
     public void setRed(int r) {
-        color = color & (0xFF00FFFF | r << 15);
+        color = (color & 0xFF00FFFF) | (r << 16);
     }
 
     public int getGreen() {
-        return (color >> 7) & 0xFF;
+        return (color >> 8) & 0xFF;
     }
 
     public void setGreen(int g) {
-        color = color & (0xFFFF00FF | g << 7);
+        color = (color & 0xFFFF00FF) | (g << 8);
     }
 
     public int getBlue() {
@@ -31,15 +31,15 @@ public class RgbaColor extends Color {
     }
 
     public void setBlue(int b) {
-        color = color & (0xFFFFFF00 | b);
+        color = (color & 0xFFFFFF00) | b;
     }
 
     public int getAlpha() {
-        return (color >> 23) & 0xFF;
+        return (color >> 24) & 0xFF;
     }
 
     public void setAlpha(int a) {
-        color = color & (0xFFFFFF | a << 23);
+        color = (color & 0xFFFFFF) | (a << 24);
     }
 
 }
