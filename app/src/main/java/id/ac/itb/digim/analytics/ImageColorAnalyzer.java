@@ -6,7 +6,8 @@ import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.Color;
 
 public class ImageColorAnalyzer {
-    public long distinctColorCount(ImageMatrix image){
+
+    public static long distinctColorCount(ImageMatrix image){
         int imageWidth = image.getWidth();
         int imageHeight = image.getHeight();
         int imageSize = imageWidth*imageHeight;
