@@ -38,6 +38,11 @@ public class ChainCodeActivity extends ActionBarActivity {
         im = (ImageView) findViewById(R.id.imageView);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void browseGallery(View view) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -70,5 +75,29 @@ public class ChainCodeActivity extends ActionBarActivity {
             Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_LONG).show();
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_chain_code, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_select_base_picture) {
+            Intent i = new Intent(this, SelectBasePictureActivity.class);
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
