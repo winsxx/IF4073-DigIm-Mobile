@@ -4,5 +4,8 @@
     <string name="app_name">DigIm</string>
     <string name="home_title">Image Equalization</string>
     <string name="action_settings">Settings</string>
-
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_chain_code">Chain Code</string>
+    <string name="title_activity_equalize">Equalize Image</string>
 </resources>

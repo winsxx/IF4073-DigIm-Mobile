@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".EqualizeActivity">
+
+    <TextView android:text="@string/home_title" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/home_text"
+        android:textSize="@dimen/abc_text_size_title_material"
+        android:layout_alignTop="@+id/capture_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capture"
+        android:id="@+id/capture_button"
+        android:onClick="onCaptureImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/mCapturedImage"
+        android:layout_alignEnd="@+id/mCapturedImage" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/mCapturedImage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/capture_button" />
+
+    <SeekBar
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:layout_alignBottom="@+id/mCapturedImage"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
