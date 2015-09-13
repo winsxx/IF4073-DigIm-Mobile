@@ -1,4 +1,4 @@
-package id.ac.itb.digim.analytics;
+package id.ac.itb.digim.analytics.color;
 
 import java.util.Arrays;
 

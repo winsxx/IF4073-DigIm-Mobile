@@ -57,8 +57,8 @@ public class MainActivity extends ActionBarActivity implements SeekBar.OnSeekBar
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mGreyscaleImageMatrix = ImageConverter.toGreyscaleMatrix(imageBitmap);
-            imageBitmap = ImageConverter.toBitmap(mGreyscaleImageMatrix);
+            mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
+            imageBitmap = ImageConverter.imageMatrixToBitmap(mGreyscaleImageMatrix);
             image.setImageBitmap(imageBitmap);
         }
     }
@@ -91,7 +91,7 @@ public class MainActivity extends ActionBarActivity implements SeekBar.OnSeekBar
         }
         if(greyscaleCumulativeEqualizer != null){
             mGreyscaleImageMatrix = greyscaleCumulativeEqualizer.getScaledEqualizedImageMatrix(progressReal);
-            image.setImageBitmap(ImageConverter.toBitmap(mGreyscaleImageMatrix));
+            image.setImageBitmap(ImageConverter.imageMatrixToBitmap(mGreyscaleImageMatrix));
         }
     }
 
