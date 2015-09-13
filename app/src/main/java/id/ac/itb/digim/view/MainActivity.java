@@ -1,4 +1,4 @@
-package id.ac.itb.digim;
+package id.ac.itb.digim.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -6,7 +6,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -16,10 +15,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import id.ac.itb.digim.analytics.equalizer.GreyscaleCumulativeEqualizer;
+import id.ac.itb.digim.R;
+import id.ac.itb.digim.processor.equalizer.GreyscaleCumulativeEqualizer;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.GreyscaleColor;
-import id.ac.itb.digim.converter.ImageConverter;
+import id.ac.itb.digim.common.converter.ImageConverter;
 
 
 public class MainActivity extends ActionBarActivity implements SeekBar.OnSeekBarChangeListener {
