@@ -8,4 +8,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_chain_code">Chain Code</string>
     <string name="title_activity_equalize">Equalize Image</string>
+    <string name="title_activity_select_base_picture">SelectBasePictureActivity</string>
 </resources>

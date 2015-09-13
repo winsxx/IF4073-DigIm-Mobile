@@ -2,6 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="id.ac.itb.digim.view.ChainCodeActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+    <item android:id="@+id/action_select_base_picture" android:title="Select Base Picture"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
