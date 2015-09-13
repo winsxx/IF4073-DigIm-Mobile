@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,7 +60,7 @@ public class ChainCodeActivity extends ActionBarActivity {
                 String imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
                 imageBitmap = BitmapFactory.decodeFile(imgDecodableString);
-
+                Log.d("[Check]","width:"+imageBitmap.getWidth()+", height:"+imageBitmap.getHeight());
                 mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
                 im.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
