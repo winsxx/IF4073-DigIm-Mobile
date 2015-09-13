@@ -2,6 +2,7 @@ package id.ac.itb.digim.view;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -16,16 +17,25 @@ import android.widget.Toast;
 import java.net.URI;
 
 import id.ac.itb.digim.R;
+import id.ac.itb.digim.common.ImageMatrix;
+import id.ac.itb.digim.common.color.BinaryColor;
+import id.ac.itb.digim.common.color.GreyscaleColor;
+import id.ac.itb.digim.common.converter.ImageConverter;
 
 
 public class ChainCodeActivity extends ActionBarActivity {
 
     private static final int RESULT_LOAD_IMG = 1;
+    ImageMatrix<GreyscaleColor> mGreyscaleImageMatrix;
+    ImageMatrix<BinaryColor> mBinaryImageMatrix;
+    Bitmap imageBitmap;
+    ImageView im;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chain_code);
+        im = (ImageView) findViewById(R.id.imageView);
     }
 
     public void browseGallery(View view) {
@@ -48,8 +58,11 @@ public class ChainCodeActivity extends ActionBarActivity {
                 int columnIndex = cursor.getColumnIndex(filePath[0]);
                 String imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
-                ImageView im = (ImageView) findViewById(R.id.imageView);
-                im.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
+                imageBitmap = BitmapFactory.decodeFile(imgDecodableString);
+
+                mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
+                mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
+                im.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
             } else {
                 Toast.makeText(this, "Gambar belum dipilih", Toast.LENGTH_LONG).show();
             }

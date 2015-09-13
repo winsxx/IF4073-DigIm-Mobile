@@ -17,4 +17,5 @@ public class BinaryColor extends Color {
             return BinaryColorType.WHITE;
         }
     }
+
 }

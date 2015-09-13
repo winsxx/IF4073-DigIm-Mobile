@@ -2,8 +2,10 @@ package id.ac.itb.digim.common.converter;
 
 import android.graphics.Bitmap;
 
+import id.ac.itb.digim.analytics.color.ImageColorAnalyzer;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
+import id.ac.itb.digim.common.color.BinaryColorType;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.color.RgbColor;
 
@@ -32,9 +34,27 @@ public class ImageConverter {
     }
 
     public static ImageMatrix<BinaryColor> greyscaleToBinaryMatrix(
-            ImageMatrix<GreyscaleColor> greyscaleColorImageMatrix){
-        // TODO implement greyscaleToBinaryMatrix
-        return null;
+        ImageMatrix<GreyscaleColor> greyscaleColorImageMatrix){
+
+        int width = greyscaleColorImageMatrix.getWidth();
+        int height = greyscaleColorImageMatrix.getHeight();
+
+        ImageMatrix<BinaryColor> result = new ImageMatrix<>(height, width);
+
+        for(int i=0; i<height; i++){
+            for(int j=0; j<width; j++){
+                GreyscaleColor grey = greyscaleColorImageMatrix.getPixel(i, j);
+                BinaryColor binary = new BinaryColor();
+                if (grey.getGrey() > 125) {
+                    binary.setBinaryColor(BinaryColorType.BLACK);
+                } else {
+                    binary.setBinaryColor(BinaryColorType.WHITE);
+                }
+                result.setPixel(i,j,binary);
+            }
+        }
+
+        return result;
     }
 
     public static Bitmap imageMatrixToBitmap(ImageMatrix matrix){
