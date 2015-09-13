@@ -46,9 +46,9 @@ public class ImageConverter {
                 GreyscaleColor grey = greyscaleColorImageMatrix.getPixel(i, j);
                 BinaryColor binary = new BinaryColor();
                 if (grey.getGrey() > 125) {
-                    binary.setBinaryColor(BinaryColorType.BLACK);
-                } else {
                     binary.setBinaryColor(BinaryColorType.WHITE);
+                } else {
+                    binary.setBinaryColor(BinaryColorType.BLACK);
                 }
                 result.setPixel(i,j,binary);
             }
