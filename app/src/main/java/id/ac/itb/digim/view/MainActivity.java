@@ -1,15 +1,13 @@
-package id.ac.itb.digim;
+package id.ac.itb.digim.view;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
+import id.ac.itb.digim.R;
 
-public class MainActivity extends ActionBarActivity {
-
+public class MainActivity extends ActionBarActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +23,5 @@ public class MainActivity extends ActionBarActivity {
         Intent i = new Intent(this, ChainCodeActivity.class);
         startActivity(i);
     }
-
 
 }

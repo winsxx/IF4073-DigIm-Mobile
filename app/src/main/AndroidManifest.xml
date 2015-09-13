@@ -14,22 +14,25 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
-            android:name=".EqualizeActivity"
-            android:label="@string/title_activity_equalize"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".MainActivity"
+            android:name="id.ac.itb.digim.view.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".ChainCodeActivity"
+            android:name="id.ac.itb.digim.view.EqualizeActivity"
+            android:label="@string/title_activity_equalize"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
+            android:name="id.ac.itb.digim.view.ChainCodeActivity"
             android:label="@string/title_activity_chain_code"
             android:screenOrientation="portrait" >
         </activity>

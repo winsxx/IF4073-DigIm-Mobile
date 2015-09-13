@@ -1,15 +1,15 @@
-package id.ac.itb.digim.converter;
+package id.ac.itb.digim.common.converter;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import id.ac.itb.digim.common.ImageMatrix;
+import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.color.RgbColor;
 
 public class ImageConverter {
 
-    public  static ImageMatrix<GreyscaleColor> toGreyscaleMatrix(Bitmap bitmap){
+    public  static ImageMatrix<GreyscaleColor> bitmapToGreyscaleMatrix(Bitmap bitmap){
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
@@ -31,7 +31,13 @@ public class ImageConverter {
         return greyscaleMatrix;
     }
 
-    public static Bitmap toBitmap(ImageMatrix matrix){
+    public static ImageMatrix<BinaryColor> greyscaleToBinaryMatrix(
+            ImageMatrix<GreyscaleColor> greyscaleColorImageMatrix){
+        // TODO implement greyscaleToBinaryMatrix
+        return null;
+    }
+
+    public static Bitmap imageMatrixToBitmap(ImageMatrix matrix){
         int width = matrix.getWidth();
         int height = matrix.getHeight();
 

@@ -1,4 +1,4 @@
-package id.ac.itb.digim.analytics.equalizer;
+package id.ac.itb.digim.processor.equalizer;
 
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.Color;

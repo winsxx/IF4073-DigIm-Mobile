@@ -1,4 +1,4 @@
-package id.ac.itb.digim;
+package id.ac.itb.digim.view;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.net.URI;
+
+import id.ac.itb.digim.R;
 
 
 public class ChainCodeActivity extends ActionBarActivity {

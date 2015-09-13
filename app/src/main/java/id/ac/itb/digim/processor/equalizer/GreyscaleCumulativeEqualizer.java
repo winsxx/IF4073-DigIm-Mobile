@@ -1,6 +1,4 @@
-package id.ac.itb.digim.analytics.equalizer;
-
-import android.media.Image;
+package id.ac.itb.digim.processor.equalizer;
 
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.GreyscaleColor;

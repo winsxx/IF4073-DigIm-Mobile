@@ -1,4 +1,4 @@
-package id.ac.itb.digim;
+package id.ac.itb.digim.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,10 +15,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import id.ac.itb.digim.analytics.equalizer.GreyscaleCumulativeEqualizer;
+import id.ac.itb.digim.R;
+import id.ac.itb.digim.processor.equalizer.GreyscaleCumulativeEqualizer;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.GreyscaleColor;
-import id.ac.itb.digim.converter.ImageConverter;
+import id.ac.itb.digim.common.converter.ImageConverter;
 
 
 public class EqualizeActivity extends ActionBarActivity implements SeekBar.OnSeekBarChangeListener {
@@ -56,8 +57,8 @@ public class EqualizeActivity extends ActionBarActivity implements SeekBar.OnSee
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mGreyscaleImageMatrix = ImageConverter.toGreyscaleMatrix(imageBitmap);
-            imageBitmap = ImageConverter.toBitmap(mGreyscaleImageMatrix);
+            mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
+            imageBitmap = ImageConverter.imageMatrixToBitmap(mGreyscaleImageMatrix);
             image.setImageBitmap(imageBitmap);
         }
     }
@@ -90,7 +91,7 @@ public class EqualizeActivity extends ActionBarActivity implements SeekBar.OnSee
         }
         if(greyscaleCumulativeEqualizer != null){
             mGreyscaleImageMatrix = greyscaleCumulativeEqualizer.getScaledEqualizedImageMatrix(progressReal);
-            image.setImageBitmap(ImageConverter.toBitmap(mGreyscaleImageMatrix));
+            image.setImageBitmap(ImageConverter.imageMatrixToBitmap(mGreyscaleImageMatrix));
         }
     }
 
