@@ -52,26 +52,12 @@ public class ChainCodeActivity extends ActionBarActivity {
         list = new ArrayList<List<Double>>(10);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-    }
-
     public void loadData() {
         String json;
         Gson gson = new Gson();
         for(int i=0; i<10; i++){
             json = mPrefs.getString(Integer.toString(i), "");
-            //Log.d("json", json);
-            //Log.d("list",  gson.fromJson(json, List.class).toString());
             list.add(i, gson.fromJson(json, List.class));
-            /*
-            if (list.get(i) != null) {
-                Toast.makeText(this, "Load chain code untuk angka " + Integer.toString(i) + " selesai", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, list.get(i).toString(), Toast.LENGTH_SHORT).show();
-            }
-            */
         }
         Toast.makeText(this, "Load data selesai", Toast.LENGTH_SHORT).show();
     }
@@ -169,7 +155,10 @@ public class ChainCodeActivity extends ActionBarActivity {
             startActivity(i);
             return true;
         }
-
+        if (id == R.id.action_load_data) {
+            loadData();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }
