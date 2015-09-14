@@ -88,7 +88,7 @@ public class ChainCodeActivity extends ActionBarActivity {
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
                 im.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
-                List<Integer> chainCode = ChainCodeGenerator.generateChainCode(mBinaryImageMatrix, BinaryColorType.WHITE);
+                List<Integer> chainCode = ChainCodeGenerator.generateNormalizedChainCode(mBinaryImageMatrix, BinaryColorType.WHITE);
                 Log.d("[CHAIN_CODE]", chainCode.toString());
                 int min = Integer.MAX_VALUE;
                 int number = 0;

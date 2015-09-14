@@ -69,7 +69,7 @@ public class SelectBasePictureActivity extends ActionBarActivity {
                 mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
 
-                List<Integer> chainCode = ChainCodeGenerator.generateChainCode(mBinaryImageMatrix, BinaryColorType.WHITE);
+                List<Integer> chainCode = ChainCodeGenerator.generateNormalizedChainCode(mBinaryImageMatrix, BinaryColorType.WHITE);
                 SharedPreferences.Editor editor = mPrefs.edit();
                 Gson gson = new Gson();
 
