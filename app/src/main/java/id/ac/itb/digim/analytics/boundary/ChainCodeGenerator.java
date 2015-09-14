@@ -60,8 +60,8 @@ public class ChainCodeGenerator {
                     image[i+2][j+2] = true;
                     if(!found){
                         found = true;
-                        objTopLeftRow = i+1;
-                        objTopLeftCol = j+1;
+                        objTopLeftRow = i+2;
+                        objTopLeftCol = j+2;
                     }
                 }
             }
@@ -74,7 +74,6 @@ public class ChainCodeGenerator {
 
             int cursorRow = objTopLeftRow;
             int cursorCol = objTopLeftCol--;
-            //footPrint[cursorRow][cursorCol] = true;
 
             FreemanCodeEightDirection nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
             while(nextDirection != null){
