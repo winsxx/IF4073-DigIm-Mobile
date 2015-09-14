@@ -97,12 +97,13 @@ public class ChainCodeActivity extends ActionBarActivity {
                 String imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
                 imageBitmap = BitmapFactory.decodeFile(imgDecodableString);
-                Log.d("[Check]","width:"+imageBitmap.getWidth()+", height:"+imageBitmap.getHeight());
+
                 mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
                 im.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
                 List<Integer> chainCode = ChainCodeGenerator.generateChainCode(mBinaryImageMatrix, BinaryColorType.WHITE);
+                Log.d("[CHAIN_CODE]", chainCode.toString());
                 int min = Integer.MAX_VALUE;
                 int number = 0;
                 int result;

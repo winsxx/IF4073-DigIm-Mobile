@@ -10,13 +10,13 @@ import id.ac.itb.digim.common.color.BinaryColorType;
 public class ChainCodeGenerator {
     public enum FreemanCodeEightDirection{
         C0(0,0,1),
-        C1(1,1,1),
-        C2(2,1,0),
-        C3(3,1,-1),
+        C1(1,-1,1),
+        C2(2,-1,0),
+        C3(3,-1,-1),
         C4(4,0,-1),
-        C5(5,-1,-1),
-        C6(6,-1,0),
-        C7(7,-1,1);
+        C5(5,1,-1),
+        C6(6,1,0),
+        C7(7,1,1);
 
         private final int mRowDirection;
         private final int mColDirection;
