@@ -125,7 +125,7 @@ public class ChainCodeGenerator {
         for(FreemanCodeEightDirection direction : FreemanCodeEightDirection.values()){
             int nextRow = row+direction.getRowDirection();
             int nextCol = col+direction.getColDirection();
-            if( !footPrint[nextRow][nextCol] && isBesideObject(image, nextRow, nextCol)){
+            if( !footPrint[nextRow][nextCol] && !image[nextRow][nextCol] && isBesideObject(image, nextRow, nextCol)){
                 return direction;
             }
         }
