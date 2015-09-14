@@ -41,7 +41,7 @@ public class ChainCodeActivity extends ActionBarActivity {
     Bitmap imageBitmap;
     ImageView im;
     SharedPreferences mPrefs;
-    List<List<Integer>> list;
+    List<List<Double>> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class ChainCodeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_chain_code);
         im = (ImageView) findViewById(R.id.imageView);
         mPrefs = getSharedPreferences("BASE_PICTURE", MODE_PRIVATE);
-        list = new ArrayList<List<Integer>>(10);
+        list = new ArrayList<List<Double>>(10);
     }
 
     @Override
@@ -63,7 +63,9 @@ public class ChainCodeActivity extends ActionBarActivity {
         Gson gson = new Gson();
         for(int i=0; i<10; i++){
             json = mPrefs.getString(Integer.toString(i), "");
-            list.add(i, (List<Integer>) gson.fromJson(json, List.class));
+            //Log.d("json", json);
+            //Log.d("list",  gson.fromJson(json, List.class).toString());
+            list.add(i, gson.fromJson(json, List.class));
             /*
             if (list.get(i) != null) {
                 Toast.makeText(this, "Load chain code untuk angka " + Integer.toString(i) + " selesai", Toast.LENGTH_SHORT).show();
@@ -127,17 +129,16 @@ public class ChainCodeActivity extends ActionBarActivity {
         }
     }
 
-    public int calcDiffChainCode(List<Integer> list1, List<Integer> list2) {
+    public int calcDiffChainCode(List<Integer> list1, List<Double> list2) {
         int[] listCount1 = new int[8];
         for(int i=0; i<list1.size(); i++) {
-            int code = Integer.valueOf(list1.get(i).toString());
+            int code = list1.get(i).intValue();
             listCount1[code]++;
         }
 
         int[] listCount2 = new int[8];
         for(int i=0; i<list2.size(); i++) {
-            //Toast.makeText(this, list2.get(i).toString(), Toast.LENGTH_LONG).show();
-            int code = Integer.valueOf(list2.get(i).toString());
+            int code = list2.get(i).intValue();
             listCount2[code]++;
         }
 
