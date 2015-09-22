@@ -89,15 +89,16 @@ public class ChainCodeActivity extends ActionBarActivity {
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
                 im.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
+
                 List<List<Integer>> allChainCode = new ArrayList<List<Integer>>();
-                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix,BinaryColorType.WHITE,true);
+                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix,BinaryColorType.BLACK,true);
 
                 String num = "";
 
                 Log.d("[ALL_CHAIN_CODE_SIZE]", String.valueOf(allChainCode.size()));
 
-                for (int idx = 0; idx<allChainCode.size(); idx++) {
-                    System.out.println("Chain code : " + allChainCode.get(idx).size());
+                for (int idx = allChainCode.size()-1; idx>=0; idx--) {
+                    //System.out.println("Chain code : " + allChainCode.get(idx).size());
                     int min = Integer.MAX_VALUE;
                     int number = 0;
                     int result;
@@ -107,10 +108,10 @@ public class ChainCodeActivity extends ActionBarActivity {
                             if(result < min) {
                                 min = result;
                                 number = i;
-                                num+=number + " ";
                             }
                         }
                     }
+                    num+= String.valueOf(number) + " ";
                 }
 
                 TextView numberText = (TextView) findViewById(R.id.textView2);

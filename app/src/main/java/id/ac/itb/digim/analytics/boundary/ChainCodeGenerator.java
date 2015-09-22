@@ -48,7 +48,7 @@ public class ChainCodeGenerator {
     private static int objTopLeftCol;
 
     public static List<Integer> generateChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor, boolean[][] image){
-        System.out.println("Compute chain code........");
+        //System.out.println("Compute chain code........");
         int width = imageMatrix.getWidth();
         int height = imageMatrix.getHeight();
 
@@ -93,7 +93,6 @@ public class ChainCodeGenerator {
 
         }
 
-        System.out.println("Chain code : " + "[" + chainCode.size() + "]" + chainCode.toString());
         return chainCode;
     }
 
@@ -121,7 +120,6 @@ public class ChainCodeGenerator {
             bg.setBinaryColor(backgroundColor);
             imageMatrix = FloodFill.BinaryFloodFill(objTopLeftRow,objTopLeftCol--,bg,imageMatrix);
 
-            oneChain.clear();
             if (!normalized) {
                 oneChain = generateChainCode(imageMatrix,backgroundColor, image);
             } else {

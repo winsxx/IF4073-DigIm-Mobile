@@ -13,14 +13,13 @@ public class FloodFill {
     public static ImageMatrix<BinaryColor> BinaryFloodFill(int row, int col, BinaryColor color,
                                                            ImageMatrix<BinaryColor> image)
     {
-        System.out.println("Filling........");
+        //System.out.println("Filling........");
         ImageMatrix<BinaryColor> result = new ImageMatrix<>(image);
 
         BinaryColor now;
         Stack<Point> stackfill = new Stack<>();
         Point posisi = new Point(row,col);
         stackfill.push(posisi);
-        System.out.println("Posisi fill pertama : " + posisi.x + " " + posisi.y);
 
         while(!stackfill.empty()){
             posisi = stackfill.pop();
