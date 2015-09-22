@@ -14,6 +14,17 @@ public class ImageMatrix<ColorType extends Color> {
         this.width = width;
     }
 
+    public ImageMatrix(ImageMatrix<ColorType> mat) {
+        pixels = new Color[mat.getHeight()][mat.getWidth()];
+        this.height = mat.getHeight();
+        this.width = mat.getWidth();
+
+        for (int i = 0; i < this.height; ++i) {
+            for (int j = 0; j < this.width; ++j) {
+                pixels[i][j] = mat.getPixel(i,j);
+            }
+        }
+    }
     public int getWidth(){
         return this.width;
     }

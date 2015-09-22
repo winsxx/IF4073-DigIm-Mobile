@@ -26,6 +26,7 @@ import java.lang.Math;
 
 import id.ac.itb.digim.R;
 import id.ac.itb.digim.analytics.boundary.ChainCodeGenerator;
+import id.ac.itb.digim.common.Fill.FloodFill;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.BinaryColorType;
@@ -88,24 +89,32 @@ public class ChainCodeActivity extends ActionBarActivity {
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
                 im.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
-                List<Integer> chainCode = ChainCodeGenerator.generateNormalizedChainCode(mBinaryImageMatrix, BinaryColorType.WHITE);
-                Log.d("[CHAIN_CODE]", chainCode.toString());
-                int min = Integer.MAX_VALUE;
-                int number = 0;
-                int result;
-                for(int i=0; i<10; i++){
-                    if(list.get(i) != null) {
-                        result = calcDiffChainCode(chainCode, list.get(i));
-                        if(result < min) {
-                            min = result;
-                            number = i;
+                List<List<Integer>> allChainCode = new ArrayList<List<Integer>>();
+                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix,BinaryColorType.WHITE,true);
+
+                String num = "";
+
+                Log.d("[ALL_CHAIN_CODE_SIZE]", String.valueOf(allChainCode.size()));
+
+                for (int idx = 0; idx<allChainCode.size(); idx++) {
+                    System.out.println("Chain code : " + allChainCode.get(idx).size());
+                    int min = Integer.MAX_VALUE;
+                    int number = 0;
+                    int result;
+                    for(int i=0; i<10; i++){
+                        if(list.get(i) != null) {
+                            result = calcDiffChainCode(allChainCode.get(idx), list.get(i));
+                            if(result < min) {
+                                min = result;
+                                number = i;
+                                num+=number + " ";
+                            }
                         }
                     }
                 }
 
                 TextView numberText = (TextView) findViewById(R.id.textView2);
-                numberText.setText("Gambar diatas adalah angka " + Integer.toString(number));
-
+                numberText.setText("Gambar diatas adalah angka " + num);
 
             } else {
                 Toast.makeText(this, "Gambar belum dipilih", Toast.LENGTH_LONG).show();
