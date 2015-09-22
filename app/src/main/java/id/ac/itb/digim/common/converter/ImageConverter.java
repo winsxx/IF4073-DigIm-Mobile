@@ -40,12 +40,14 @@ public class ImageConverter {
         int height = greyscaleColorImageMatrix.getHeight();
 
         ImageMatrix<BinaryColor> result = new ImageMatrix<>(height, width);
+        int treshold = otsuTresholder(greyscaleColorImageMatrix);
 
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++){
                 GreyscaleColor grey = greyscaleColorImageMatrix.getPixel(i, j);
                 BinaryColor binary = new BinaryColor();
-                if (grey.getGrey() > otsuTresholder(greyscaleColorImageMatrix)) {
+
+                if (grey.getGrey() >treshold ) {
                     binary.setBinaryColor(BinaryColorType.WHITE);
                 } else {
                     binary.setBinaryColor(BinaryColorType.BLACK);

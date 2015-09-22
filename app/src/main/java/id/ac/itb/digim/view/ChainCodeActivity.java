@@ -91,7 +91,7 @@ public class ChainCodeActivity extends ActionBarActivity {
 
 
                 List<List<Integer>> allChainCode = new ArrayList<List<Integer>>();
-                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix,BinaryColorType.BLACK,true);
+                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix,BinaryColorType.WHITE,true);
 
                 String num = "";
 
