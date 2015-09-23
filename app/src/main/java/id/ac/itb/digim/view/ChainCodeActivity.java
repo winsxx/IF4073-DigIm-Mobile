@@ -97,6 +97,9 @@ public class ChainCodeActivity extends ActionBarActivity {
                 Log.d("[ALL_CHAIN_CODE_SIZE]", String.valueOf(allChainCode.size()));
 
                 for (int idx = 0; idx < allChainCode.size(); idx++) {
+                    if(allChainCode.get(idx).size()<100){
+                        continue;
+                    }
                     System.out.println("CC: [" + allChainCode.get(idx).size() + "] " + allChainCode.get(idx).toString());
                     int min = Integer.MAX_VALUE;
                     int number = 0;
@@ -110,7 +113,11 @@ public class ChainCodeActivity extends ActionBarActivity {
                             }
                         }
                     }
-                    num += String.valueOf(number) + " ";
+
+                    if(min < 25) {
+                        System.out.println("Hasil tebakan num "+ String.valueOf(number) + " min "+min);
+                        num += String.valueOf(number) + " ";
+                    }
                 }
 
                 TextView numberText = (TextView) findViewById(R.id.textView2);
@@ -181,7 +188,7 @@ public class ChainCodeActivity extends ActionBarActivity {
         int result = 0;
         for(int i=0; i<8; i++) {
             //result += Math.abs(Math.log(listCount1[i]+1) - Math.log(listCount2[i]+1));
-            result += Math.abs(listCount1[i]+1) - listCount2[i]+1;
+            result += Math.abs(listCount1[i] - listCount2[i]);
         }
         return result;
     }
