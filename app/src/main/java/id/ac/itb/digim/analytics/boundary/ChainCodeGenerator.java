@@ -3,11 +3,10 @@ package id.ac.itb.digim.analytics.boundary;
 import java.util.ArrayList;
 import java.util.List;
 
-import id.ac.itb.digim.common.Fill.FloodFill;
+import id.ac.itb.digim.common.fill.FloodFill;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.BinaryColorType;
-import id.ac.itb.digim.common.color.Color;
 
 public class ChainCodeGenerator {
     public enum FreemanCodeEightDirection{
@@ -47,6 +46,11 @@ public class ChainCodeGenerator {
     private static int objTopLeftRow;
     private static int objTopLeftCol;
 
+    public static List<Integer> getChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
+        boolean[][] image = getObjectOfInterest(imageMatrix,backgroundColor);
+        return generateChainCode(imageMatrix,backgroundColor,image);
+    }
+
     public static List<Integer> generateChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor, boolean[][] image){
         //System.out.println("Compute chain code........");
         int width = imageMatrix.getWidth();
@@ -60,8 +64,8 @@ public class ChainCodeGenerator {
         while (!found && n < width*height) {
             if(imageMatrix.getPixel(i,j).getBinaryColor() != backgroundColor) {
                 found = true;
-                objTopLeftRow = i+2;
-                objTopLeftCol = j+2;
+                objTopLeftRow = i+3;
+                objTopLeftCol = j+3;
             } else {
                 n++;
                 if (j < width-1) {
@@ -76,10 +80,10 @@ public class ChainCodeGenerator {
         // Trace object to generate chain code
         List<Integer> chainCode = new ArrayList<>();
         if(found){
-            boolean footPrint[][] = new boolean[height+4][width+4]; // to know which cell we already passed
+            boolean footPrint[][] = new boolean[height+6][width+6]; // to know which cell we already passed
 
             int cursorRow = objTopLeftRow;
-            int cursorCol = objTopLeftCol--;
+            int cursorCol = objTopLeftCol-1;
 
             FreemanCodeEightDirection nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
             while(nextDirection != null){
@@ -90,7 +94,6 @@ public class ChainCodeGenerator {
 
                 nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
             }
-
         }
 
         return chainCode;
@@ -115,10 +118,14 @@ public class ChainCodeGenerator {
         }
 
         while (!oneChain.isEmpty()) {
-            allChainCode.add(oneChain);
+            if (oneChain.size() > 10) {
+                allChainCode.add(oneChain);
+            }
+
             BinaryColor bg = new BinaryColor();
             bg.setBinaryColor(backgroundColor);
-            imageMatrix = FloodFill.BinaryFloodFill(objTopLeftRow,objTopLeftCol--,bg,imageMatrix);
+            System.out.println((objTopLeftRow-3) + " " + (objTopLeftCol-3));
+            imageMatrix = FloodFill.BinaryFloodFill(objTopLeftRow-3,objTopLeftCol-3,bg,imageMatrix);
 
             if (!normalized) {
                 oneChain = generateChainCode(imageMatrix,backgroundColor, image);
@@ -135,7 +142,7 @@ public class ChainCodeGenerator {
         int height = imageMatrix.getHeight();
 
         // Default value for boolean is false
-        boolean image[][] = new boolean[height+4][width+4];
+        boolean image[][] = new boolean[height+6][width+6];
 
         // Set object of interest with value equal true
         // Get the top left object pixel location
@@ -143,7 +150,7 @@ public class ChainCodeGenerator {
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++){
                 if(imageMatrix.getPixel(i,j).getBinaryColor() != backgroundColor){
-                    image[i+2][j+2] = true;
+                    image[i+3][j+3] = true;
                 }
             }
         }
@@ -182,6 +189,7 @@ public class ChainCodeGenerator {
         for(FreemanCodeEightDirection direction : FreemanCodeEightDirection.values()){
             int nextRow = row+direction.getRowDirection();
             int nextCol = col+direction.getColDirection();
+            //System.out.println(nextRow + " " + nextCol);
             if( !footPrint[nextRow][nextCol] && !image[nextRow][nextCol] && isBesideObject(image, nextRow, nextCol)){
                 return direction;
             }
@@ -192,3 +200,4 @@ public class ChainCodeGenerator {
 
 
 }
+

@@ -1,4 +1,4 @@
-package id.ac.itb.digim.common.Fill;
+package id.ac.itb.digim.common.fill;
 
 import android.graphics.Point;
 
@@ -6,7 +6,6 @@ import java.util.Stack;
 
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
-import id.ac.itb.digim.common.color.Color;
 
 public class FloodFill {
 
@@ -32,12 +31,12 @@ public class FloodFill {
                     stackfill.push(po);
                 }
 
-                if (posisi.x+1 <= image.getHeight()) {
+                if (posisi.x+1 < image.getHeight()) {
                     Point po2 = new Point(posisi.x+1,posisi.y);
                     stackfill.push(po2);
                 }
 
-                if (posisi.y+1 <= image.getWidth()) {
+                if (posisi.y+1 < image.getWidth()) {
                     Point po3 = new Point(posisi.x,posisi.y+1);
                     stackfill.push(po3);
                 }

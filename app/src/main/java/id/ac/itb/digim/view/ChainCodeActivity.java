@@ -19,14 +19,12 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
 
 import id.ac.itb.digim.R;
 import id.ac.itb.digim.analytics.boundary.ChainCodeGenerator;
-import id.ac.itb.digim.common.Fill.FloodFill;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.BinaryColorType;
@@ -90,28 +88,29 @@ public class ChainCodeActivity extends ActionBarActivity {
                 im.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
 
+
                 List<List<Integer>> allChainCode = new ArrayList<List<Integer>>();
-                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix,BinaryColorType.WHITE,true);
+                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix,BinaryColorType.BLACK,false);
 
                 String num = "";
 
                 Log.d("[ALL_CHAIN_CODE_SIZE]", String.valueOf(allChainCode.size()));
 
-                for (int idx = allChainCode.size()-1; idx>=0; idx--) {
-                    //System.out.println("Chain code : " + allChainCode.get(idx).size());
+                for (int idx = 0; idx < allChainCode.size(); idx++) {
+                    System.out.println("CC: [" + allChainCode.get(idx).size() + "] " + allChainCode.get(idx).toString());
                     int min = Integer.MAX_VALUE;
                     int number = 0;
                     int result;
-                    for(int i=0; i<10; i++){
-                        if(list.get(i) != null) {
+                    for (int i = 0; i < 10; i++) {
+                        if (list.get(i) != null) {
                             result = calcDiffChainCode(allChainCode.get(idx), list.get(i));
-                            if(result < min) {
+                            if (result < min) {
                                 min = result;
                                 number = i;
                             }
                         }
                     }
-                    num+= String.valueOf(number) + " ";
+                    num += String.valueOf(number) + " ";
                 }
 
                 TextView numberText = (TextView) findViewById(R.id.textView2);
@@ -124,6 +123,46 @@ public class ChainCodeActivity extends ActionBarActivity {
             Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_LONG).show();
             ex.printStackTrace();
         }
+    }
+
+    public static int minDistance(List<Integer> word1, List<Double> word2) {
+        int len1 = word1.size();
+        int len2 = word2.size();
+
+        // len1+1, len2+1, because finally return dp[len1][len2]
+        int[][] dp = new int[len1 + 1][len2 + 1];
+
+        for (int i = 0; i <= len1; i++) {
+            dp[i][0] = i;
+        }
+
+        for (int j = 0; j <= len2; j++) {
+            dp[0][j] = j;
+        }
+
+        //iterate though, and check last char
+        for (int i = 0; i < len1; i++) {
+            int c1 = word1.get(i);
+            for (int j = 0; j < len2; j++) {
+                int c2 = word2.get(j).intValue();
+
+                //if last two chars equal
+                if (c1 == c2) {
+                    //update dp value for +1 length
+                    dp[i + 1][j + 1] = dp[i][j];
+                } else {
+                    int replace = dp[i][j] + 1;
+                    int insert = dp[i][j + 1] + 1;
+                    int delete = dp[i + 1][j] + 1;
+
+                    int min = replace > insert ? insert : replace;
+                    min = delete > min ? min : delete;
+                    dp[i + 1][j + 1] = min;
+                }
+            }
+        }
+
+        return dp[len1][len2];
     }
 
     public int calcDiffChainCode(List<Integer> list1, List<Double> list2) {
@@ -141,7 +180,8 @@ public class ChainCodeActivity extends ActionBarActivity {
 
         int result = 0;
         for(int i=0; i<8; i++) {
-            result += Math.abs(listCount1[i] - listCount2[i]);
+            //result += Math.abs(Math.log(listCount1[i]+1) - Math.log(listCount2[i]+1));
+            result += Math.abs(listCount1[i]+1) - listCount2[i]+1;
         }
         return result;
     }
