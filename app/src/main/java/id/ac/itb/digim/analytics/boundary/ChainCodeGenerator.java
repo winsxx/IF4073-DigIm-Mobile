@@ -111,14 +111,14 @@ public class ChainCodeGenerator {
     }
 
     public static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
-        return normalizeChainCode(generateChainCode(imageMatrix, backgroundColor));
+        return normalizeEightDirectionChainCode(generateChainCode(imageMatrix, backgroundColor));
     }
 
     private static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix,
                                                              BinaryColorType backgroundColor,
                                                              int objTopLeftRow,
                                                              int objTopLeftCol) {
-        return normalizeChainCode(generateChainCode(imageMatrix, backgroundColor, objTopLeftRow, objTopLeftCol));
+        return normalizeEightDirectionChainCode(generateChainCode(imageMatrix, backgroundColor, objTopLeftRow, objTopLeftCol));
     }
 
     public static List<List<Integer>> getAllChainCode(ImageMatrix<BinaryColor> imageMatrix,
@@ -135,7 +135,7 @@ public class ChainCodeGenerator {
             if (!normalized) {
                 oneChain = generateChainCode(imageMatrix, backgroundColor, topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
             } else {
-                oneChain = generateNormalizedChainCode(imageMatrix, backgroundColor, topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
+                oneChain = generateCoarseFourDirectionTurnChainCode(imageMatrix, backgroundColor, topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
             }
 
             allChainCode.add(oneChain);
@@ -152,7 +152,23 @@ public class ChainCodeGenerator {
         return allChainCode;
     }
 
-    private static List<Integer> normalizeChainCode(List<Integer> chainCode) {
+    private static List<Integer> normalizeFourDirectionChainCode(List<Integer> chainCode) {
+        if (chainCode == null) return null;
+
+        int codeSize = 4;
+        List<Integer> normalizedCC = new ArrayList<>();
+
+        for (int i = 1; i < chainCode.size(); i++) {
+            int diff = chainCode.get(i) - chainCode.get(i - 1);
+            if (diff < 0) diff += codeSize;
+            normalizedCC.add(diff);
+        }
+
+        Log.i("[CHAIN_CODE_GENERATOR][NORMALIZE_FOUR_DIRECTION_CHAIN_CODE]", "Normalized chain code: " + normalizedCC);
+        return normalizedCC;
+    }
+
+    private static List<Integer> normalizeEightDirectionChainCode(List<Integer> chainCode) {
         if (chainCode == null) return null;
 
         int codeSize = FreemanCodeEightDirection.values().length;
@@ -170,8 +186,19 @@ public class ChainCodeGenerator {
             if (diff < 0) diff += codeSize;
             normalizedCC.add(diff);
         }
-        Log.i("[CHAIN_CODE_GENERATOR][NORMALIZE_CHAIN_CODE]", "Normalized chain code: " + normalizedCC);
+        Log.i("[CHAIN_CODE_GENERATOR][NORMALIZE_EIGHT_DIRECTION_CHAIN_CODE]", "Normalized chain code: " + normalizedCC);
         return normalizedCC;
+    }
+
+    public static List<Integer> generateCoarseFourDirectionTurnChainCode(ImageMatrix<BinaryColor> imageMatrix,
+                                                                         BinaryColorType backgroundColor) {
+        FindObjectTopLeftPositionResult topLeftPosition = getAnObjectTopLeftPosition(imageMatrix, backgroundColor);
+        if (topLeftPosition.isFound()) {
+            return generateCoarseFourDirectionTurnChainCode(imageMatrix, backgroundColor,
+                    topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
+        } else {
+            return null;
+        }
     }
 
     private static List<Integer> generateCoarseFourDirectionTurnChainCode(ImageMatrix<BinaryColor> imageMatrix,
@@ -182,7 +209,7 @@ public class ChainCodeGenerator {
         List<Integer> normalChainCode = generateChainCode(imageMatrix, backgroundColor,
                 objTopLeftRow, objTopLeftCol);
         List<Integer> coarseFourDirectionChainCode = getCoarseFourDirectionChainCode(normalChainCode);
-        List<Integer> normalizedCoarseFourDirectionChainCode = normalizeChainCode(coarseFourDirectionChainCode);
+        List<Integer> normalizedCoarseFourDirectionChainCode = normalizeFourDirectionChainCode(coarseFourDirectionChainCode);
         return removeCodeZeroFromNormalizedChainCode(normalizedCoarseFourDirectionChainCode);
     }
 
@@ -202,6 +229,7 @@ public class ChainCodeGenerator {
             if (rowDirection != 0 && colDirection != 0) {
                 double radAngle = Math.atan2((double) -rowDirection, (double) colDirection);
                 double degreeAngle = radAngle * (180.0 / Math.PI);
+                if (degreeAngle < 0) degreeAngle += 360.0;
                 if (degreeAngle <= 45.0 || degreeAngle > 315.0) {
                     coarseChainCode.add(0);
                 } else if (degreeAngle > 45.0 && degreeAngle <= 135.0) {
@@ -213,7 +241,7 @@ public class ChainCodeGenerator {
                 }
             }
         }
-        Log.i("[CHAIN_CODE_GENERATOR]", "Coarse four directions chain code: " + coarseChainCode);
+        Log.i("[CHAIN_CODE_GENERATOR][GET_COARSE_FOUR_DIRECTION_CHAIN_CODE]", "Chain code: " + coarseChainCode);
         return coarseChainCode;
     }
 
