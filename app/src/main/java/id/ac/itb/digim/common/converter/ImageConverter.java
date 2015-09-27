@@ -15,7 +15,7 @@ public class ImageConverter {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
-        ImageMatrix<GreyscaleColor> greyscaleMatrix = new ImageMatrix<>(height, width);
+        ImageMatrix<GreyscaleColor> greyscaleMatrix = new ImageMatrix<>(GreyscaleColor.class, height, width);
 
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++){
@@ -39,7 +39,7 @@ public class ImageConverter {
         int width = greyscaleColorImageMatrix.getWidth();
         int height = greyscaleColorImageMatrix.getHeight();
 
-        ImageMatrix<BinaryColor> result = new ImageMatrix<>(height, width);
+        ImageMatrix<BinaryColor> result = new ImageMatrix<>(BinaryColor.class, height, width);
         int treshold = otsuThresholder(greyscaleColorImageMatrix);
 
         for(int i=0; i<height; i++){

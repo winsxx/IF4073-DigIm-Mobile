@@ -9,7 +9,7 @@ public class ImageScaling {
                                                              int newWidth,
                                                              int newHeight){
 
-        ImageMatrix<GreyscaleColor> resizedImage = new ImageMatrix<>(newHeight, newWidth);
+        ImageMatrix<GreyscaleColor> resizedImage = new ImageMatrix<>(GreyscaleColor.class, newHeight, newWidth);
         int originalHeight = originalImage.getHeight();
         int originalWidth = originalImage.getWidth();
         float x_ratio = ((float) (originalWidth-1))/newWidth; // -1 to prevent array out of bound

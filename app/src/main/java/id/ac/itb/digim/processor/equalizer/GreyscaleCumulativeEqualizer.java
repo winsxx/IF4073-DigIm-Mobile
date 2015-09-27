@@ -23,7 +23,7 @@ public class GreyscaleCumulativeEqualizer implements Equalizer<GreyscaleColor> {
     }
 
     private ImageMatrix<GreyscaleColor> generateEqualizedImageMatrix(ImageMatrix<GreyscaleColor> imageMatrix){
-        ImageMatrix<GreyscaleColor> result = new ImageMatrix<>(imageMatrix.getHeight(), imageMatrix.getWidth());
+        ImageMatrix<GreyscaleColor> result = new ImageMatrix<>(GreyscaleColor.class, imageMatrix.getHeight(), imageMatrix.getWidth());
 
         int[] cdf = new int[256];
         for (int i = 0; i < imageMatrix.getHeight(); ++i) {
@@ -42,7 +42,7 @@ public class GreyscaleCumulativeEqualizer implements Equalizer<GreyscaleColor> {
             }
         }
 
-        result = new ImageMatrix<GreyscaleColor>(imageMatrix.getHeight(), imageMatrix.getWidth());
+        result = new ImageMatrix<GreyscaleColor>(GreyscaleColor.class, imageMatrix.getHeight(), imageMatrix.getWidth());
         int area = imageMatrix.getHeight()*imageMatrix.getWidth();
         for (int i = 0; i < imageMatrix.getHeight(); ++i) {
             for (int j = 0; j < imageMatrix.getWidth(); ++j) {
@@ -57,6 +57,7 @@ public class GreyscaleCumulativeEqualizer implements Equalizer<GreyscaleColor> {
 
     public ImageMatrix<GreyscaleColor> getScaledEqualizedImageMatrix(float scale){
         ImageMatrix<GreyscaleColor> ans = new ImageMatrix<GreyscaleColor>(
+                GreyscaleColor.class,
                 equalizedImageMatrix.getHeight(),
                 equalizedImageMatrix.getWidth());
 
