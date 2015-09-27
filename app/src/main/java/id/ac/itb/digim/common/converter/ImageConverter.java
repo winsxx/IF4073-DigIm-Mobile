@@ -1,8 +1,8 @@
 package id.ac.itb.digim.common.converter;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
-import id.ac.itb.digim.analytics.color.ImageColorAnalyzer;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.BinaryColorType;
@@ -29,7 +29,7 @@ public class ImageConverter {
                 greyscaleMatrix.setPixel(i, j, greyscaleColor);
             }
         }
-
+        Log.i("CONVERTER", "Bitmap to greyscale");
         return greyscaleMatrix;
     }
 
@@ -55,7 +55,7 @@ public class ImageConverter {
                 result.setPixel(i,j,binary);
             }
         }
-
+        Log.i("CONVERTER", "Greyscale to binary with treshold " + treshold);
         return result;
     }
 
@@ -116,6 +116,7 @@ public class ImageConverter {
             }
         }
 
+        Log.i("CONVERTER", "Otsu treshold " + threshold);
         return threshold;
     }
 

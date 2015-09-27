@@ -1,5 +1,7 @@
 package id.ac.itb.digim.analytics.boundary;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,8 @@ public class ChainCodeGenerator {
 
     private static FindObjectTopLeftPositionResult getAnObjectTopLeftPosition(
             ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
+
+        Log.i("CHAIN_CODE", "With background color: " + backgroundColor);
 
         int width = imageMatrix.getWidth();
         int height = imageMatrix.getHeight();
@@ -44,6 +48,12 @@ public class ChainCodeGenerator {
         topLeftPositionResult.setFound(found);
         topLeftPositionResult.setTopRow(objTopLeftRow);
         topLeftPositionResult.setLeftCol(objTopLeftCol);
+
+        if (topLeftPositionResult.isFound()) {
+            Log.i("CHAIN_CODE", "TopLeft Row:" + topLeftPositionResult.getTopRow() + ", Col:" + topLeftPositionResult.getLeftCol());
+        } else {
+            Log.i("CHAIN_CODE", "Object not found");
+        }
 
         return topLeftPositionResult;
     }
@@ -96,7 +106,7 @@ public class ChainCodeGenerator {
 
             nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
         }
-
+        Log.i("CHAIN_CODE", "Chain code: " + chainCode);
         return chainCode;
     }
 
@@ -160,7 +170,7 @@ public class ChainCodeGenerator {
             if (diff < 0) diff += codeSize;
             normalizedCC.add(diff);
         }
-
+        Log.i("CHAIN_CODE", "Normalized chain code: " + normalizedCC);
         return normalizedCC;
     }
 
@@ -203,6 +213,7 @@ public class ChainCodeGenerator {
                 }
             }
         }
+        Log.i("CHAIN_CODE", "Coarse four directions chain code: " + coarseChainCode);
         return coarseChainCode;
     }
 
@@ -213,6 +224,7 @@ public class ChainCodeGenerator {
                 newChainCode.add(normalizedChainCode.get(i));
             }
         }
+        Log.i("CHAIN_CODE", "Removed code zero: " + newChainCode);
         return newChainCode;
     }
 

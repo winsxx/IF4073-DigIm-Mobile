@@ -5,6 +5,7 @@
 //import id.ac.itb.digim.common.ImageMatrix;
 //import id.ac.itb.digim.common.color.BinaryColor;
 //
+// TODO Repair or clean up. Don't comment code
 //public class GaussianBlur {
 //
 //    public static ImageMatrix<BinaryColor> gaussBlur_4(ImageMatrix<BinaryColor> imageMatrix,int width,int height,int radius) {
