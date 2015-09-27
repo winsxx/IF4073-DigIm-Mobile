@@ -3,72 +3,35 @@ package id.ac.itb.digim.analytics.boundary;
 import java.util.ArrayList;
 import java.util.List;
 
-import id.ac.itb.digim.common.fill.FloodFill;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.BinaryColorType;
+import id.ac.itb.digim.common.fill.FloodFill;
 
 public class ChainCodeGenerator {
-    public enum FreemanCodeEightDirection{
-        C0(0,0,1),
-        C1(1,-1,1),
-        C2(2,-1,0),
-        C3(3,-1,-1),
-        C4(4,0,-1),
-        C5(5,1,-1),
-        C6(6,1,0),
-        C7(7,1,1);
+    private static final int IMAGE_OFFSET = 3;
+    private static final int CHAIN_CODE_COARSE_CONST = 3;
 
-        private final int mRowDirection;
-        private final int mColDirection;
-        private final int mCode;
+    private static FindObjectTopLeftPositionResult getAnObjectTopLeftPosition(
+            ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
 
-        private FreemanCodeEightDirection(int code, int rowDirection, int colDirection){
-            mRowDirection = rowDirection;
-            mColDirection = colDirection;
-            mCode = code;
-        }
-
-        public int getRowDirection(){
-            return mRowDirection;
-        }
-
-        public int getColDirection(){
-            return mColDirection;
-        }
-
-        public int getCode(){
-            return mCode;
-        }
-
-    }
-
-    private static int objTopLeftRow;
-    private static int objTopLeftCol;
-
-    public static List<Integer> getChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
-        boolean[][] image = getObjectOfInterest(imageMatrix,backgroundColor);
-        return generateChainCode(imageMatrix,backgroundColor,image);
-    }
-
-    public static List<Integer> generateChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor, boolean[][] image){
-        //System.out.println("Compute chain code........");
         int width = imageMatrix.getWidth();
         int height = imageMatrix.getHeight();
 
         boolean found = false;
-        objTopLeftRow = -1;
-        objTopLeftCol = -1;
+        int objTopLeftRow = 0;
+        int objTopLeftCol = 0;
 
-        int n = 0, i = 0, j= 0;
-        while (!found && n < width*height) {
-            if(imageMatrix.getPixel(i,j).getBinaryColor() != backgroundColor) {
+        int n = 0, i = 0, j = 0;
+        while (n < width * height) {
+            if (imageMatrix.getPixel(i, j).getBinaryColor() != backgroundColor) {
                 found = true;
-                objTopLeftRow = i+3;
-                objTopLeftCol = j+3;
+                objTopLeftRow = i;
+                objTopLeftCol = j;
+                break;
             } else {
                 n++;
-                if (j < width-1) {
+                if (j < width - 1) {
                     j++;
                 } else {
                     j = 0;
@@ -77,104 +40,180 @@ public class ChainCodeGenerator {
             }
         }
 
+        FindObjectTopLeftPositionResult topLeftPositionResult = new FindObjectTopLeftPositionResult();
+        topLeftPositionResult.setFound(found);
+        topLeftPositionResult.setTopRow(objTopLeftRow);
+        topLeftPositionResult.setLeftCol(objTopLeftCol);
+
+        return topLeftPositionResult;
+    }
+
+    public static List<Integer> generateChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
+        FindObjectTopLeftPositionResult topLeftPosition = getAnObjectTopLeftPosition(imageMatrix, backgroundColor);
+        if (topLeftPosition.isFound()) {
+            return generateChainCode(imageMatrix, backgroundColor,
+                    topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
+        } else {
+            return null;
+        }
+    }
+
+    private static List<Integer> generateChainCode(ImageMatrix<BinaryColor> imageMatrix,
+                                                   BinaryColorType backgroundColor,
+                                                   int objTopLeftRow,
+                                                   int objTopLeftCol) {
+
+        int width = imageMatrix.getWidth();
+        int height = imageMatrix.getHeight();
+
+        // Default value for boolean is false
+        boolean image[][] = new boolean[height + (2 * IMAGE_OFFSET)][width + (2 * IMAGE_OFFSET)];
+
+        // Set object of interest with value equal true
+        // Get the top left object pixel location
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (imageMatrix.getPixel(i, j).getBinaryColor() != backgroundColor) {
+                    image[i + IMAGE_OFFSET][j + IMAGE_OFFSET] = true;
+                }
+            }
+        }
+
         // Trace object to generate chain code
         List<Integer> chainCode = new ArrayList<>();
-        if(found){
-            boolean footPrint[][] = new boolean[height+6][width+6]; // to know which cell we already passed
 
-            int cursorRow = objTopLeftRow;
-            int cursorCol = objTopLeftCol-1;
+        boolean footPrint[][] = new boolean[height + (2 * IMAGE_OFFSET)][width + (2 * IMAGE_OFFSET)]; // to know which cell we already passed
 
-            FreemanCodeEightDirection nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
-            while(nextDirection != null){
-                chainCode.add(nextDirection.getCode());
-                cursorRow += nextDirection.getRowDirection();
-                cursorCol += nextDirection.getColDirection();
-                footPrint[cursorRow][cursorCol] = true;
+        int cursorRow = objTopLeftRow;
+        int cursorCol = objTopLeftCol - 1;
 
-                nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
-            }
+        FreemanCodeEightDirection nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
+        while (nextDirection != null) {
+            chainCode.add(nextDirection.getCode());
+            cursorRow += nextDirection.getRowDirection();
+            cursorCol += nextDirection.getColDirection();
+            footPrint[cursorRow][cursorCol] = true;
+
+            nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
         }
 
         return chainCode;
     }
 
-    public static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor){
-        boolean[][] image = getObjectOfInterest(imageMatrix,backgroundColor);
-        return normalizeChainCode(generateChainCode(imageMatrix,backgroundColor,image));
+    public static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
+        return normalizeChainCode(generateChainCode(imageMatrix, backgroundColor));
     }
 
-    public static List<List<Integer>> getAllChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor, boolean normalized) {
-        System.out.println("Get all chain code.....");
-        boolean[][] image = getObjectOfInterest(imageMatrix,backgroundColor);
+    private static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix,
+                                                             BinaryColorType backgroundColor,
+                                                             int objTopLeftRow,
+                                                             int objTopLeftCol) {
+        return normalizeChainCode(generateChainCode(imageMatrix, backgroundColor, objTopLeftRow, objTopLeftCol));
+    }
 
-        List<List<Integer>> allChainCode = new ArrayList<List<Integer>>();
-        List<Integer> oneChain = new ArrayList<Integer>();
+    public static List<List<Integer>> getAllChainCode(ImageMatrix<BinaryColor> imageMatrix,
+                                                      BinaryColorType backgroundColor,
+                                                      boolean normalized) {
 
-        if (!normalized) {
-            oneChain = generateChainCode(imageMatrix,backgroundColor, image);
-        } else {
-            oneChain = generateNormalizedChainCode(imageMatrix, backgroundColor);
-        }
+        List<List<Integer>> allChainCode = new ArrayList<>();
+        List<Integer> oneChain;
 
-        while (!oneChain.isEmpty()) {
-            if (oneChain.size() > 10) {
-                allChainCode.add(oneChain);
+        FindObjectTopLeftPositionResult topLeftPosition = getAnObjectTopLeftPosition(imageMatrix, backgroundColor);
+
+        while (topLeftPosition.isFound()) {
+
+            if (!normalized) {
+                oneChain = generateChainCode(imageMatrix, backgroundColor, topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
+            } else {
+                oneChain = generateNormalizedChainCode(imageMatrix, backgroundColor, topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
             }
+
+            allChainCode.add(oneChain);
 
             BinaryColor bg = new BinaryColor();
             bg.setBinaryColor(backgroundColor);
-            System.out.println((objTopLeftRow-3) + " " + (objTopLeftCol-3));
-            imageMatrix = FloodFill.BinaryFloodFill(objTopLeftRow-3,objTopLeftCol-3,bg,imageMatrix);
 
-            if (!normalized) {
-                oneChain = generateChainCode(imageMatrix,backgroundColor, image);
-            } else {
-                oneChain = generateNormalizedChainCode(imageMatrix, backgroundColor);
-            }
+            imageMatrix = FloodFill.BinaryFloodFill(topLeftPosition.getTopRow(),
+                    topLeftPosition.getLeftCol(), bg, imageMatrix);
+
+            topLeftPosition = getAnObjectTopLeftPosition(imageMatrix, backgroundColor);
         }
 
         return allChainCode;
     }
 
-    private static boolean[][] getObjectOfInterest(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
-        int width = imageMatrix.getWidth();
-        int height = imageMatrix.getHeight();
+    private static List<Integer> normalizeChainCode(List<Integer> chainCode) {
+        if (chainCode == null) return null;
 
-        // Default value for boolean is false
-        boolean image[][] = new boolean[height+6][width+6];
-
-        // Set object of interest with value equal true
-        // Get the top left object pixel location
-        boolean found = false;
-        for(int i=0; i<height; i++){
-            for(int j=0; j<width; j++){
-                if(imageMatrix.getPixel(i,j).getBinaryColor() != backgroundColor){
-                    image[i+3][j+3] = true;
-                }
-            }
-        }
-
-        return image;
-    }
-
-    private static List<Integer> normalizeChainCode(List<Integer> chainCode){
         int codeSize = FreemanCodeEightDirection.values().length;
         List<Integer> normalizedCC = new ArrayList<>();
 
-        for(int i=1; i<chainCode.size(); i++){
-            int diff = chainCode.get(i) - chainCode.get(i-1);
-            if(diff < 0 ) diff += codeSize;
+        for (int i = 1; i < chainCode.size(); i++) {
+            int diff = chainCode.get(i) - chainCode.get(i - 1);
+            if (diff < 0) diff += codeSize;
             normalizedCC.add(diff);
         }
+
         // Last case
-        if(chainCode.size() > 1){
+        if (chainCode.size() > 1) {
             int diff = chainCode.get(0) - chainCode.get(chainCode.size() - 1);
-            if(diff < 0 ) diff += codeSize;
+            if (diff < 0) diff += codeSize;
             normalizedCC.add(diff);
         }
 
         return normalizedCC;
+    }
+
+    private static List<Integer> generateCoarseFourDirectionTurnChainCode(ImageMatrix<BinaryColor> imageMatrix,
+                                                                          BinaryColorType backgroundColor,
+                                                                          int objTopLeftRow,
+                                                                          int objTopLeftCol) {
+
+        List<Integer> normalChainCode = generateChainCode(imageMatrix, backgroundColor,
+                objTopLeftRow, objTopLeftCol);
+        List<Integer> coarseFourDirectionChainCode = getCoarseFourDirectionChainCode(normalChainCode);
+        List<Integer> normalizedCoarseFourDirectionChainCode = normalizeChainCode(coarseFourDirectionChainCode);
+        return removeCodeZeroFromNormalizedChainCode(normalizedCoarseFourDirectionChainCode);
+    }
+
+    private static List<Integer> getCoarseFourDirectionChainCode(List<Integer> detailChainCode) {
+        int newChainCodeLength = detailChainCode.size() / CHAIN_CODE_COARSE_CONST;
+        List<Integer> coarseChainCode = new ArrayList<>();
+        for (int i = 0; i < newChainCodeLength; i++) {
+            int rowDirection = 0;
+            int colDirection = 0;
+            for (int j = 0; j < CHAIN_CODE_COARSE_CONST; j++) {
+                int detailChainCodeIdx = i * CHAIN_CODE_COARSE_CONST + j;
+                Integer code = detailChainCode.get(detailChainCodeIdx);
+                FreemanCodeEightDirection freemanCode = FreemanCodeEightDirection.getFreemanCodeFromCode(code);
+                rowDirection += freemanCode.getRowDirection();
+                colDirection += freemanCode.getColDirection();
+            }
+            if (rowDirection != 0 && colDirection != 0) {
+                double radAngle = Math.atan2((double) -rowDirection, (double) colDirection);
+                double degreeAngle = radAngle * (180.0 / Math.PI);
+                if (degreeAngle <= 45.0 || degreeAngle > 315.0) {
+                    coarseChainCode.add(0);
+                } else if (degreeAngle > 45.0 && degreeAngle <= 135.0) {
+                    coarseChainCode.add(1);
+                } else if (degreeAngle > 135.0 && degreeAngle <= 225.0) {
+                    coarseChainCode.add(2);
+                } else if (degreeAngle > 225.0 && degreeAngle <= 315.0) {
+                    coarseChainCode.add(3);
+                }
+            }
+        }
+        return coarseChainCode;
+    }
+
+    private static List<Integer> removeCodeZeroFromNormalizedChainCode(List<Integer> normalizedChainCode) {
+        List<Integer> newChainCode = new ArrayList<>();
+        for (int i = 0; i < normalizedChainCode.size(); i++) {
+            if (normalizedChainCode.get(i) != 0) {
+                newChainCode.add(normalizedChainCode.get(i));
+            }
+        }
+        return newChainCode;
     }
 
     private static boolean isBesideObject(boolean[][] image, int row, int col){
@@ -184,18 +223,74 @@ public class ChainCodeGenerator {
     private static FreemanCodeEightDirection getNextAvailableMove(boolean[][] image,
                                                                   boolean[][] footPrint,
                                                                   final int row,
-                                                                  final int col){
+                                                                  final int col) {
 
-        for(FreemanCodeEightDirection direction : FreemanCodeEightDirection.values()){
-            int nextRow = row+direction.getRowDirection();
-            int nextCol = col+direction.getColDirection();
-            //System.out.println(nextRow + " " + nextCol);
-            if( !footPrint[nextRow][nextCol] && !image[nextRow][nextCol] && isBesideObject(image, nextRow, nextCol)){
+        for (FreemanCodeEightDirection direction : FreemanCodeEightDirection.values()) {
+            int nextRow = row + direction.getRowDirection();
+            int nextCol = col + direction.getColDirection();
+            if (!footPrint[nextRow][nextCol] && !image[nextRow][nextCol] && isBesideObject(image, nextRow, nextCol)) {
                 return direction;
             }
         }
 
         return null;
+    }
+
+    private enum FreemanCodeEightDirection {
+        C0(0, 0, 1),
+        C1(1, -1, 1),
+        C2(2, -1, 0),
+        C3(3, -1, -1),
+        C4(4, 0, -1),
+        C5(5, 1, -1),
+        C6(6, 1, 0),
+        C7(7, 1, 1);
+
+        private final int mRowDirection;
+        private final int mColDirection;
+        private final int mCode;
+
+        private FreemanCodeEightDirection(int code, int rowDirection, int colDirection) {
+            mRowDirection = rowDirection;
+            mColDirection = colDirection;
+            mCode = code;
+        }
+
+        public static FreemanCodeEightDirection getFreemanCodeFromCode(int code) {
+            switch (code) {
+                case 0:
+                    return C0;
+                case 1:
+                    return C1;
+                case 2:
+                    return C2;
+                case 3:
+                    return C3;
+                case 4:
+                    return C4;
+                case 5:
+                    return C5;
+                case 6:
+                    return C6;
+                case 7:
+                    return C7;
+                default:
+                    return C0;
+            }
+        }
+
+        public int getRowDirection() {
+            return mRowDirection;
+        }
+
+        public int getColDirection() {
+            return mColDirection;
+        }
+
+        public int getCode() {
+            return mCode;
+        }
+
     }
 
 

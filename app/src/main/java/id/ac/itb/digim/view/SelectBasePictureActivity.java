@@ -6,13 +6,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -69,7 +66,7 @@ public class SelectBasePictureActivity extends ActionBarActivity {
                 mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
 
-                List<Integer> chainCode = ChainCodeGenerator.getChainCode(mBinaryImageMatrix, BinaryColorType.BLACK);
+                List<Integer> chainCode = ChainCodeGenerator.generateChainCode(mBinaryImageMatrix, BinaryColorType.BLACK);
                 SharedPreferences.Editor editor = mPrefs.edit();
                 Gson gson = new Gson();
 
