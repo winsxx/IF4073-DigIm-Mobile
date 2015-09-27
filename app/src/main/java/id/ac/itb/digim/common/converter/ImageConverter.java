@@ -29,7 +29,7 @@ public class ImageConverter {
                 greyscaleMatrix.setPixel(i, j, greyscaleColor);
             }
         }
-        Log.i("CONVERTER", "Bitmap to greyscale");
+        Log.i("[IMAGE_CONVERTER][BITMAP_TO_GREYSCALE]", "Bitmap to greyscale done");
         return greyscaleMatrix;
     }
 
@@ -40,7 +40,7 @@ public class ImageConverter {
         int height = greyscaleColorImageMatrix.getHeight();
 
         ImageMatrix<BinaryColor> result = new ImageMatrix<>(height, width);
-        int treshold = otsuTresholder(greyscaleColorImageMatrix);
+        int treshold = otsuThresholder(greyscaleColorImageMatrix);
 
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++){
@@ -55,7 +55,7 @@ public class ImageConverter {
                 result.setPixel(i,j,binary);
             }
         }
-        Log.i("CONVERTER", "Greyscale to binary with treshold " + treshold);
+        Log.i("[IMAGE_CONVERTER][GREYSCALE_TO_BINARY]", "With treshold " + treshold);
         return result;
     }
 
@@ -73,7 +73,7 @@ public class ImageConverter {
         return bitmap;
     }
 
-    private static int otsuTresholder(ImageMatrix<GreyscaleColor> imageMatrix){
+    private static int otsuThresholder(ImageMatrix<GreyscaleColor> imageMatrix) {
         // Calculate histogram
         int[] histData = new int[256];
         for (int i = 0; i < imageMatrix.getHeight(); ++i) {
@@ -116,7 +116,7 @@ public class ImageConverter {
             }
         }
 
-        Log.i("CONVERTER", "Otsu treshold " + threshold);
+        Log.i("[IMAGE_CONVERTER][OTSU_THRESHOLDER]", "Otsu treshold " + threshold);
         return threshold;
     }
 

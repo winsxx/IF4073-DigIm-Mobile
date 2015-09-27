@@ -17,7 +17,7 @@ public class ChainCodeGenerator {
     private static FindObjectTopLeftPositionResult getAnObjectTopLeftPosition(
             ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
 
-        Log.i("CHAIN_CODE", "With background color: " + backgroundColor);
+        Log.i("[CHAIN_CODE_GENERATOR][GET_AN_OBJECT_TOP_LEFT_POSITION]", "With background color: " + backgroundColor);
 
         int width = imageMatrix.getWidth();
         int height = imageMatrix.getHeight();
@@ -50,9 +50,9 @@ public class ChainCodeGenerator {
         topLeftPositionResult.setLeftCol(objTopLeftCol);
 
         if (topLeftPositionResult.isFound()) {
-            Log.i("CHAIN_CODE", "TopLeft Row:" + topLeftPositionResult.getTopRow() + ", Col:" + topLeftPositionResult.getLeftCol());
+            Log.i("[CHAIN_CODE_GENERATOR][GET_AN_OBJECT_TOP_LEFT_POSITION]", "TopLeft Row:" + topLeftPositionResult.getTopRow() + ", Col:" + topLeftPositionResult.getLeftCol());
         } else {
-            Log.i("CHAIN_CODE", "Object not found");
+            Log.i("[CHAIN_CODE_GENERATOR][GET_AN_OBJECT_TOP_LEFT_POSITION]", "Object not found");
         }
 
         return topLeftPositionResult;
@@ -94,8 +94,8 @@ public class ChainCodeGenerator {
 
         boolean footPrint[][] = new boolean[height + (2 * IMAGE_OFFSET)][width + (2 * IMAGE_OFFSET)]; // to know which cell we already passed
 
-        int cursorRow = objTopLeftRow;
-        int cursorCol = objTopLeftCol - 1;
+        int cursorRow = objTopLeftRow + IMAGE_OFFSET;
+        int cursorCol = objTopLeftCol + IMAGE_OFFSET - 1;
 
         FreemanCodeEightDirection nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
         while (nextDirection != null) {
@@ -106,7 +106,7 @@ public class ChainCodeGenerator {
 
             nextDirection = getNextAvailableMove(image, footPrint, cursorRow, cursorCol);
         }
-        Log.i("CHAIN_CODE", "Chain code: " + chainCode);
+        Log.i("[CHAIN_CODE_GENERATOR][GENERATE_CHAIN_CODE]", "Chain code: " + chainCode);
         return chainCode;
     }
 
@@ -170,7 +170,7 @@ public class ChainCodeGenerator {
             if (diff < 0) diff += codeSize;
             normalizedCC.add(diff);
         }
-        Log.i("CHAIN_CODE", "Normalized chain code: " + normalizedCC);
+        Log.i("[CHAIN_CODE_GENERATOR][NORMALIZE_CHAIN_CODE]", "Normalized chain code: " + normalizedCC);
         return normalizedCC;
     }
 
@@ -213,7 +213,7 @@ public class ChainCodeGenerator {
                 }
             }
         }
-        Log.i("CHAIN_CODE", "Coarse four directions chain code: " + coarseChainCode);
+        Log.i("[CHAIN_CODE_GENERATOR]", "Coarse four directions chain code: " + coarseChainCode);
         return coarseChainCode;
     }
 
@@ -224,7 +224,7 @@ public class ChainCodeGenerator {
                 newChainCode.add(normalizedChainCode.get(i));
             }
         }
-        Log.i("CHAIN_CODE", "Removed code zero: " + newChainCode);
+        Log.i("[CHAIN_CODE_GENERATOR][REMOVE_CODE_ZERO]", "Removed code zero: " + newChainCode);
         return newChainCode;
     }
 
