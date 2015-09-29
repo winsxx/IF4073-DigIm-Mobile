@@ -1,63 +1,87 @@
-//package id.ac.itb.digim.analytics.blurring;
-//
-//import java.util.ArrayList;
-//
-//import id.ac.itb.digim.common.ImageMatrix;
-//import id.ac.itb.digim.common.color.BinaryColor;
-//
-// TODO Repair or clean up. Don't comment code
-//public class GaussianBlur {
-//
-//    public static ImageMatrix<BinaryColor> gaussBlur_4(ImageMatrix<BinaryColor> imageMatrix,int width,int height,int radius) {
-//        int[] bxs = boxesForGauss(radius, 3);
-//
-//        ImageMatrix<BinaryColor> target = new ImageMatrix<BinaryColor>(imageMatrix.getHeight(),imageMatrix.getWidth());
-//
-//        boxBlur_4 (imageMatrix, target, width, height, (bxs[0]-1)/2);
-//        boxBlur_4 (target, imageMatrix, width, height, (bxs[1]-1)/2);
-//        boxBlur_4 (imageMatrix, target, width, height, (bxs[2]-1)/2);
-//    }
-//
-//    private static ImageMatrix<BinaryColor> boxBlur_4 (ImageMatrix<BinaryColor> scl, tcl, int w, int h, int r) {
-//        for(int i=0; i<scl.length; i++) tcl[i] = scl[i];
-//            boxBlurH_4(tcl, scl, w, h, r);
-//        boxBlurT_4(scl, tcl, w, h, r);
-//    }
-//    function boxBlurH_4 (scl, tcl, w, h, r) {
-//        var iarr = 1 / (r+r+1);
-//        for(var i=0; i<h; i++) {
-//            var ti = i*w, li = ti, ri = ti+r;
-//            var fv = scl[ti], lv = scl[ti+w-1], val = (r+1)*fv;
-//            for(var j=0; j<r; j++) val += scl[ti+j];
-//            for(var j=0  ; j<=r ; j++) { val += scl[ri++] - fv       ;   tcl[ti++] = Math.round(val*iarr); }
-//            for(var j=r+1; j<w-r; j++) { val += scl[ri++] - scl[li++];   tcl[ti++] = Math.round(val*iarr); }
-//            for(var j=w-r; j<w  ; j++) { val += lv        - scl[li++];   tcl[ti++] = Math.round(val*iarr); }
-//        }
-//    }
-//    function boxBlurT_4 (scl, tcl, w, h, r) {
-//        var iarr = 1 / (r+r+1);
-//        for(var i=0; i<w; i++) {
-//            var ti = i, li = ti, ri = ti+r*w;
-//            var fv = scl[ti], lv = scl[ti+w*(h-1)], val = (r+1)*fv;
-//            for(var j=0; j<r; j++) val += scl[ti+j*w];
-//            for(var j=0  ; j<=r ; j++) { val += scl[ri] - fv     ;  tcl[ti] = Math.round(val*iarr);  ri+=w; ti+=w; }
-//            for(var j=r+1; j<h-r; j++) { val += scl[ri] - scl[li];  tcl[ti] = Math.round(val*iarr);  li+=w; ri+=w; ti+=w; }
-//            for(var j=h-r; j<h  ; j++) { val += lv      - scl[li];  tcl[ti] = Math.round(val*iarr);  li+=w; ti+=w; }
-//         }
-//     }
-//
-//    private static int[] boxesForGauss(int sigma, int n)  // standard deviation, number of boxes
-//    {
-//        int wIdeal = (int) Math.sqrt((12*sigma*sigma/n)+1);  // Ideal averaging filter width
-//        int wl = (int) Math.floor(wIdeal);  if(wl%2==0) wl--;
-//        int wu = wl+2;
-//
-//        int mIdeal = (12*sigma*sigma - n*wl*wl - 4*n*wl - 3*n)/(-4*wl - 4);
-//
-//        int[] sizes = new int[n];
-//        for(int i=0; i<n; i++) {
-//            sizes[n] = (i<mIdeal?wl:wu);
-//        }
-//        return sizes;
-//    }
-//}
+package id.ac.itb.digim.analytics.blurring;
+
+import android.util.Log;
+
+import id.ac.itb.digim.common.ImageMatrix;
+import id.ac.itb.digim.common.color.GreyscaleColor;
+
+public class GaussianBlur {
+
+    public static ImageMatrix<GreyscaleColor> gaussBlur(ImageMatrix<GreyscaleColor> source, int radius) {
+        Log.d("[GAUSSIAN_BLUR][GAUSS_BLUR]", "Function call with radius: " + radius);
+        int[] bxs = boxesForGauss(radius, 3);
+
+        ImageMatrix<GreyscaleColor> target;
+
+        target = boxBlur(source, (bxs[0] - 1) / 2);
+        source = boxBlur(target, (bxs[1] - 1) / 2);
+        target = boxBlur(source, (bxs[2] - 1) / 2);
+
+        return target;
+    }
+
+    private static ImageMatrix<GreyscaleColor> boxBlur(ImageMatrix<GreyscaleColor> source, int radius) {
+        Log.d("[GAUSSIAN_BLUR][BOX_BLUR]", "Function call with radius: " + radius);
+        ImageMatrix<GreyscaleColor> target = new ImageMatrix<>(source);
+        source = boxBlurH(target, radius);
+        target = boxBlurT(source, radius);
+        return target;
+    }
+
+    private static ImageMatrix<GreyscaleColor> boxBlurH(ImageMatrix<GreyscaleColor> source, int radius) {
+        Log.d("[GAUSSIAN_BLUR][BOX_BLUR_H]", "Function call with radius: " + radius);
+        ImageMatrix<GreyscaleColor> target = new ImageMatrix<>(GreyscaleColor.class, source.getHeight(), source.getWidth());
+        int width = source.getWidth();
+        int height = source.getHeight();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int val = 0;
+                for (int ix = j - radius; ix < j + radius + 1; ix++) {
+                    int x = Math.min(width - 1, Math.max(0, ix));
+                    val += source.getPixel(i, x).getGrey();
+                }
+                GreyscaleColor greyscaleColor = new GreyscaleColor();
+                greyscaleColor.setGrey(val / (radius * 2 + 1));
+                target.setPixel(i, j, greyscaleColor);
+            }
+        }
+        return target;
+    }
+
+    private static ImageMatrix<GreyscaleColor> boxBlurT(ImageMatrix<GreyscaleColor> source, int radius) {
+        Log.d("[GAUSSIAN_BLUR][BOX_BLUR_T]", "Function call with radius: " + radius);
+        ImageMatrix<GreyscaleColor> target = new ImageMatrix<>(GreyscaleColor.class, source.getHeight(), source.getWidth());
+        int width = source.getWidth();
+        int height = source.getHeight();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int val = 0;
+                for (int iy = i - radius; iy < i + radius + 1; iy++) {
+                    int y = Math.min(height - 1, Math.max(0, iy));
+                    val += source.getPixel(y, j).getGrey();
+                }
+                GreyscaleColor greyscaleColor = new GreyscaleColor();
+                greyscaleColor.setGrey(val / (radius * 2 + 1));
+                target.setPixel(i, j, greyscaleColor);
+            }
+        }
+        return target;
+    }
+
+    private static int[] boxesForGauss(double standardDeviation, int numOfBoxes) {
+        Log.d("[GAUSSIAN_BLUR][BOXES_FOR_GAUSS]", "Function call with number of boxes: " + numOfBoxes);
+
+        int wIdeal = (int) Math.sqrt((12 * standardDeviation * standardDeviation / numOfBoxes) + 1);  // Ideal averaging filter width
+        int wl = (int) Math.floor(wIdeal);
+        if (wl % 2 == 0) wl--;
+        int wu = wl + 2;
+
+        int mIdeal = (int) (Math.round(12.0 * standardDeviation * standardDeviation - numOfBoxes * wl * wl - 4.0 * numOfBoxes * wl - 3.0 * numOfBoxes) / (-4.0 * wl - 4.0));
+
+        int[] sizes = new int[numOfBoxes];
+        for (int i = 0; i < numOfBoxes; i++) {
+            sizes[i] = (i < mIdeal) ? wl : wu;
+        }
+        return sizes;
+    }
+}

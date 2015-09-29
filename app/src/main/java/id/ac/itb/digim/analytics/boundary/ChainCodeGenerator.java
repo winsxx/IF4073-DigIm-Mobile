@@ -306,7 +306,8 @@ public class ChainCodeGenerator {
                 rowDirection += freemanCode.getRowDirection();
                 colDirection += freemanCode.getColDirection();
             }
-            if (rowDirection != 0 && colDirection != 0) {
+
+            if (rowDirection != 0 || colDirection != 0) {
                 double radAngle = Math.atan2((double) -rowDirection, (double) colDirection);
                 double degreeAngle = radAngle * (180.0 / Math.PI);
                 if (degreeAngle < 0) degreeAngle += 360.0;

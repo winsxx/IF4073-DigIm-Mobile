@@ -172,19 +172,19 @@ public class ChainCodeActivity extends ActionBarActivity {
 
     public int calcDiffChainCode(List<Integer> list1, List<Double> list2) {
         int[] listCount1 = new int[8];
-        for(int i=0; i<list1.size(); i++) {
+        for (int i = 0; i < list1.size(); i++) {
             int code = list1.get(i).intValue();
             listCount1[code]++;
         }
 
         int[] listCount2 = new int[8];
-        for(int i=0; i<list2.size(); i++) {
+        for (int i = 0; i < list2.size(); i++) {
             int code = list2.get(i).intValue();
             listCount2[code]++;
         }
 
         int result = 0;
-        for(int i=0; i<8; i++) {
+        for (int i = 0; i < 8; i++) {
             //result += Math.abs(Math.log(listCount1[i]+1) - Math.log(listCount2[i]+1));
             result += Math.abs(listCount1[i] - listCount2[i]);
         }
