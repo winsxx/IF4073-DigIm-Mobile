@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +29,7 @@ import id.ac.itb.digim.common.color.BinaryColorType;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
 
-
-public class ChainCodeActivity extends ActionBarActivity {
+public class CekKodeBelokActivity extends ActionBarActivity {
 
     private static final int RESULT_LOAD_IMG = 1;
     ImageMatrix<GreyscaleColor> mGreyscaleImageMatrix;
@@ -46,20 +42,8 @@ public class ChainCodeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chain_code);
+        setContentView(R.layout.activity_cek_kode_belok);
         im = (ImageView) findViewById(R.id.imageView);
-        mPrefs = getSharedPreferences("BASE_PICTURE", MODE_PRIVATE);
-        list = new ArrayList<List<Double>>(10);
-    }
-
-    public void loadData() {
-        String json;
-        Gson gson = new Gson();
-        for (int i = 0; i < 10; i++) {
-            json = mPrefs.getString(Integer.toString(i), "");
-            list.add(i, gson.fromJson(json, List.class));
-        }
-        Toast.makeText(this, "Load data selesai", Toast.LENGTH_SHORT).show();
     }
 
     public void browseGallery(View view) {
@@ -96,30 +80,12 @@ public class ChainCodeActivity extends ActionBarActivity {
 
                 Log.d("[ALL_CHAIN_CODE_SIZE]", String.valueOf(allChainCode.size()));
 
-                for (int idx = 0; idx < allChainCode.size(); idx++) {
-                    System.out.println("CC: [" + allChainCode.get(idx).size() + "] " + allChainCode.get(idx).toString());
-                    int min = Integer.MAX_VALUE;
-                    int number = 0;
-                    int result;
-
-                    for (int i = 0; i < 10; i++) {
-                        if (list.get(i) != null) {
-                            result = DiffChainCode.calcDiffDouble(allChainCode.get(idx), list.get(i));
-                            if (result < min) {
-                                min = result;
-                                number = i;
-                            }
-                        }
-                    }
-
-                    if (min < 25) {
-                        System.out.println("Hasil tebakan num " + String.valueOf(number) + " min " + min);
-                        num += String.valueOf(number) + " ";
-                    }
+                for (int i =0; i< allChainCode.size(); i++) {
+                    num += allChainCode.get(i).toString() + "\n";
                 }
 
-                TextView numberText = (TextView) findViewById(R.id.textView2);
-                numberText.setText("Gambar diatas adalah angka " + num);
+                TextView numberText = (TextView) findViewById(R.id.belokText);
+                numberText.setText("Kode belok :  " + num);
 
             } else {
                 Toast.makeText(this, "Gambar belum dipilih", Toast.LENGTH_LONG).show();
@@ -130,30 +96,6 @@ public class ChainCodeActivity extends ActionBarActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_chain_code, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_select_base_picture) {
-            Intent i = new Intent(this, SelectBasePictureActivity.class);
-            startActivity(i);
-            return true;
-        }
-        if (id == R.id.action_load_data) {
-            loadData();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

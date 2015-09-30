@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="id.ac.itb.digim"
-    android:installLocation="internalOnly">
+    android:installLocation="internalOnly" >
 
-<uses-feature
+    <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
@@ -37,6 +37,14 @@
         <activity
             android:name=".view.SelectBasePictureActivity"
             android:label="@string/title_activity_select_base_picture" >
+        </activity>
+        <activity
+            android:name=".view.MerkMobilActivity"
+            android:label="@string/title_activity_merk_mobil" >
+        </activity>
+        <activity
+            android:name=".view.CekKodeBelokActivity"
+            android:label="@string/title_activity_cek_kode_belok" >
         </activity>
     </application>
 

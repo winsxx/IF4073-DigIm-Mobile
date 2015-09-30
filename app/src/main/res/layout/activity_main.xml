@@ -24,4 +24,14 @@
         android:layout_below="@+id/eqButton"
         android:layout_centerHorizontal="true"
         android:onClick="toChainCode"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Merk Mobil"
+        android:id="@+id/button"
+        android:layout_below="@+id/chainButton"
+        android:layout_alignLeft="@+id/chainButton"
+        android:layout_alignStart="@+id/chainButton"
+        android:onClick="toMerkMobil"/>
 </RelativeLayout>

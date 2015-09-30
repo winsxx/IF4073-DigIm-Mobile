@@ -24,4 +24,9 @@ public class MainActivity extends ActionBarActivity  {
         startActivity(i);
     }
 
+    public void toMerkMobil(View view) {
+        Intent i = new Intent(this, MerkMobilActivity.class);
+        startActivity(i);
+    }
+
 }

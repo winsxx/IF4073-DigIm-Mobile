@@ -9,4 +9,7 @@
     <string name="title_activity_chain_code">Chain Code</string>
     <string name="title_activity_equalize">Equalize Image</string>
     <string name="title_activity_select_base_picture">SelectBasePictureActivity</string>
+    <string name="title_activity_merk_mobil">MerkMobil</string>
+    <string name="title_activity_cek_kode_belok">CekKodeBelokActivity</string>
+
 </resources>
