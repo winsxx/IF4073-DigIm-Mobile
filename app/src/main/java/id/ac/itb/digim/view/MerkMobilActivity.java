@@ -39,7 +39,7 @@ public class MerkMobilActivity extends ActionBarActivity {
     Bitmap imageBitmap;
     ImageView im;
     SharedPreferences mPrefs;
-    List<List<Integer>> database; //{0 : Terios; 1: Avanza// }
+    List<List<Integer>> database; //{0 : Terios; 1: Avanza; 2:Xenia; 3:Yaris/ }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,8 @@ public class MerkMobilActivity extends ActionBarActivity {
         database = new ArrayList<List<Integer>>();
         database.add(getListTerios());
         database.add(getListAvanza());
+        database.add(getListXenia());
+        database.add(getListYaris());
     }
 
     public void browseGallery(View view) {
@@ -85,6 +87,10 @@ public class MerkMobilActivity extends ActionBarActivity {
                 int index = Integer.MAX_VALUE;
 
                 Log.d("[ALL_CHAIN_CODE_SIZE]", String.valueOf(allChainCode.size()));
+
+                for (int i = 0; i<allChainCode.size(); i++) {
+                    System.out.println("[CC] " + allChainCode.get(i).toString());
+                }
 
                 int score = Integer.MAX_VALUE;
 
@@ -155,6 +161,10 @@ public class MerkMobilActivity extends ActionBarActivity {
                 break;
             case 1 : merk = "Avanza";
                 break;
+            case 2 : merk = "Xenia";
+                break;
+            case 3 : merk = "Yaris";
+                break;
             default: merk = "Tidak tahu";
         }
         return merk;
@@ -177,23 +187,36 @@ public class MerkMobilActivity extends ActionBarActivity {
 
     public List<Integer> getListAvanza() {
         List <Integer> list = new ArrayList<>();
-//        [3, 1, 1, 3, 3, 1, 1, 3, 1, 3, 3, 3, 1, 3, 1, 3, 2, 1, 3, 3, 1, 1, 3, 3, 2, 3, 3, 1, 1, 3]
+//        [3, 1, 1, 3, 3, 1, 3, 3, 2, 3, 3, 3, 2, 3, 3, 1, 3, 3, 1, 3]
         list.add(3);list.add(1);
         list.add(1);list.add(3);
         list.add(3);list.add(1);
-        list.add(1);list.add(3);
-        list.add(1);list.add(3);
         list.add(3);list.add(3);
-        list.add(1);list.add(3);
-        list.add(1);list.add(3);
-        list.add(2);list.add(1);
-        list.add(3);list.add(3);
-        list.add(1);list.add(1);
+        list.add(2);list.add(3);
         list.add(3);list.add(3);
         list.add(2);list.add(3);
         list.add(3);list.add(1);
+        list.add(3);list.add(3);
         list.add(1);list.add(3);
         return list;
     }
+
+    public List<Integer> getListXenia() {
+        List<Integer> list = new ArrayList<>();
+//        [3, 3, 3, 1, 3, 2, 3]
+        list.add(3);list.add(3);list.add(3);
+        list.add(1);list.add(3);list.add(2);list.add(3);
+        return list;
+    }
+
+    public List<Integer> getListYaris() {
+        List<Integer> list = new ArrayList<>();
+//        [3, 1, 3, 1, 3, 3, 2, 3, 3]
+        list.add(3);list.add(1);list.add(3);list.add(1);
+        list.add(3);list.add(3);list.add(2);list.add(3);
+        list.add(3);
+        return list;
+    }
+
 
 }
