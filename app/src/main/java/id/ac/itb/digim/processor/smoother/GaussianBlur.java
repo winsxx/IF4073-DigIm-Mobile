@@ -1,4 +1,4 @@
-package id.ac.itb.digim.analytics.blurring;
+package id.ac.itb.digim.processor.smoother;
 
 import android.util.Log;
 
