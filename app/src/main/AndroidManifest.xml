@@ -46,6 +46,10 @@
             android:name=".view.CekKodeBelokActivity"
             android:label="@string/title_activity_cek_kode_belok" >
         </activity>
+        <activity
+            android:name=".view.DeteksiAngkaV2"
+            android:label="@string/title_activity_deteksi_angka_v2" >
+        </activity>
     </application>
 
 </manifest>

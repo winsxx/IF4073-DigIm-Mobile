@@ -29,4 +29,9 @@ public class MainActivity extends ActionBarActivity  {
         startActivity(i);
     }
 
+    public void toAngkaV2(View view) {
+        Intent i = new Intent(this, DeteksiAngkaV2.class);
+        startActivity(i);
+    }
+
 }

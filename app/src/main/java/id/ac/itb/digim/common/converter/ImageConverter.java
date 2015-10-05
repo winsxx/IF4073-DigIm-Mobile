@@ -59,6 +59,50 @@ public class ImageConverter {
         return result;
     }
 
+    public static ImageMatrix<BinaryColor>binaryToFiveSquareMatrix (
+            ImageMatrix<BinaryColor> imageInput) {
+        ImageMatrix<BinaryColor> fiveSquare = new ImageMatrix<>(BinaryColor.class, 5,5);
+        BinaryColor black = new BinaryColor(); black.setBinaryColor(BinaryColorType.BLACK);
+        BinaryColor white = new BinaryColor(); white.setBinaryColor(BinaryColorType.WHITE);
+
+        int height = imageInput.getHeight()/5;
+        int width = imageInput.getWidth()/5;
+        int sHeight = imageInput.getHeight()%5;
+        int sWidth = imageInput.getHeight()%5;
+
+        int resHeight, resWidth;
+
+        for (int i = 0 ; i< imageInput.getHeight(); i=i+height+(sHeight>0 ? 1 : 0)) {
+            for (int j = 0; j< imageInput.getWidth(); j=j+width+(sWidth>0 ? 1 : 0)) {
+                int numBlack = 0, numWhite = 0;
+
+                for (int in=0; in<5; in++) {
+                    for (int jn=0; jn<5; jn++) {
+                        if (imageInput.getPixel(in+i, jn+j)==black) {
+                            numBlack=numBlack+1;
+                        } else {
+                            numWhite=numWhite+1;
+                        }
+                    }
+                }
+
+                resHeight = i%(sHeight>0 ? height+1 : height);
+                resWidth = j%(sWidth>0 ? width+1 : width);
+
+                if (numBlack >= numWhite) {
+                    fiveSquare.setPixel(resHeight,resWidth,black);
+                } else {
+                    fiveSquare.setPixel(resHeight,resWidth,white);
+                }
+
+                sWidth = sWidth>0 ? sWidth-1 : 0;
+            }
+            sHeight = sHeight>0 ? sHeight-1 : 0;
+        }
+
+        return fiveSquare;
+    }
+
     public static Bitmap imageMatrixToBitmap(ImageMatrix matrix){
         int width = matrix.getWidth();
         int height = matrix.getHeight();

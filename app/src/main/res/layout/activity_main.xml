@@ -34,4 +34,13 @@
         android:layout_alignLeft="@+id/chainButton"
         android:layout_alignStart="@+id/chainButton"
         android:onClick="toMerkMobil"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deteksi Angka v2"
+        android:id="@+id/angkaV2"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:onClick="toAngkaV2"/>
 </RelativeLayout>

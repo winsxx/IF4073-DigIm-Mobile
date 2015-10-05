@@ -11,5 +11,6 @@
     <string name="title_activity_select_base_picture">SelectBasePictureActivity</string>
     <string name="title_activity_merk_mobil">MerkMobil</string>
     <string name="title_activity_cek_kode_belok">CekKodeBelokActivity</string>
+    <string name="title_activity_deteksi_angka_v2">DeteksiAngkaV2</string>
 
 </resources>
