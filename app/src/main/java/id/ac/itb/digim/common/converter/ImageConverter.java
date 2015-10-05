@@ -61,6 +61,9 @@ public class ImageConverter {
 
     public static ImageMatrix<BinaryColor>binaryToFiveSquareMatrix (
             ImageMatrix<BinaryColor> imageInput) {
+
+        System.out.println("SIZE GAMBAR- h" + imageInput.getHeight() + " w: " + imageInput.getWidth());
+
         ImageMatrix<BinaryColor> fiveSquare = new ImageMatrix<>(BinaryColor.class, 5,5);
         BinaryColor black = new BinaryColor(); black.setBinaryColor(BinaryColorType.BLACK);
         BinaryColor white = new BinaryColor(); white.setBinaryColor(BinaryColorType.WHITE);
@@ -70,15 +73,17 @@ public class ImageConverter {
         int sHeight = imageInput.getHeight()%5;
         int sWidth = imageInput.getHeight()%5;
 
-        int resHeight, resWidth;
-
-        for (int i = 0 ; i< imageInput.getHeight(); i=i+height+(sHeight>0 ? 1 : 0)) {
-            for (int j = 0; j< imageInput.getWidth(); j=j+width+(sWidth>0 ? 1 : 0)) {
+        for (int i = 0 ; i< 5; i++) {
+            for (int j = 0; j< 5; j++) {
                 int numBlack = 0, numWhite = 0;
 
-                for (int in=0; in<5; in++) {
-                    for (int jn=0; jn<5; jn++) {
-                        if (imageInput.getPixel(in+i, jn+j)==black) {
+                for (int in=0; in<height+(i<sHeight ? 1 : 0); in++) {
+                    for (int jn=0; jn<width+(j<sWidth ? 1 : 0); jn++) {
+
+                        int rowB = (i<sHeight) ? i*(height+1)+in : sHeight*(height+1)+(i-sHeight)*height+in;
+                        int colB = (j<sWidth) ? j*(width+1)+jn : sWidth*(width+1)+(j-sWidth)*width+jn;
+
+                        if (imageInput.getPixel(rowB, colB).getBinaryColor()==BinaryColorType.BLACK) {
                             numBlack=numBlack+1;
                         } else {
                             numWhite=numWhite+1;
@@ -86,20 +91,19 @@ public class ImageConverter {
                     }
                 }
 
-                resHeight = i%(sHeight>0 ? height+1 : height);
-                resWidth = j%(sWidth>0 ? width+1 : width);
+                System.out.println("[i,j] : " + i + "," + j + " - " + numWhite + "," + numBlack);
 
-                if (numBlack >= numWhite) {
-                    fiveSquare.setPixel(resHeight,resWidth,black);
+                if (numBlack >= 0.25*(numBlack+numWhite)) {
+                    fiveSquare.setPixel(i,j,black);
                 } else {
-                    fiveSquare.setPixel(resHeight,resWidth,white);
+                    fiveSquare.setPixel(i,j,white);
                 }
-
-                sWidth = sWidth>0 ? sWidth-1 : 0;
             }
-            sHeight = sHeight>0 ? sHeight-1 : 0;
         }
-
+//
+//        for (int i = 0; i<5; i++) {
+//            for ()
+//        }
         return fiveSquare;
     }
 

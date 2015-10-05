@@ -44,7 +44,7 @@
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:id="@+id/bitmapView"
+                android:id="@+id/imageView"
                 android:layout_below="@+id/galleryButton"
                 android:layout_centerHorizontal="true" />
 
@@ -52,9 +52,9 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:id="@+id/fiveSquareImageView"
-                android:layout_below="@+id/bitmapView"
-                android:layout_alignLeft="@+id/bitmapView"
-                android:layout_alignStart="@+id/bitmapView"
+                android:layout_below="@+id/imageView"
+                android:layout_alignLeft="@+id/imageView"
+                android:layout_alignStart="@+id/imageView"
                 android:layout_marginTop="54dp" />
 
             <TextView
