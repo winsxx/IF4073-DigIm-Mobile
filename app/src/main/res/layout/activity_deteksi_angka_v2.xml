@@ -29,18 +29,33 @@
                 android:id="@+id/textView"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:textAlignment="inherit" />
+                android:layout_alignParentStart="true" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gallery"
                 android:id="@+id/galleryButton"
+                android:onClick="browseGallery"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:onClick="browseGallery"/>
+                android:layout_alignParentEnd="true" />
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/bitmapView"
+                android:layout_below="@+id/galleryButton"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/fiveSquareImageView"
+                android:layout_below="@+id/bitmapView"
+                android:layout_alignLeft="@+id/bitmapView"
+                android:layout_alignStart="@+id/bitmapView"
+                android:layout_marginTop="54dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,31 +63,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Angka : "
                 android:id="@+id/textView2"
-                android:layout_above="@+id/imageView2"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="94dp" />
-
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:id="@+id/bitmapView"
-                android:layout_above="@+id/galleryButton"
-                android:layout_below="@+id/imageView2"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/fiveSquareImageView"
                 android:layout_centerHorizontal="true" />
-
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:id="@+id/imageView2"
-                android:layout_below="@+id/textView2"
-                android:layout_above="@+id/bitmapView"
-                android:layout_toLeftOf="@+id/galleryButton"
-                android:layout_toStartOf="@+id/galleryButton" />
 
         </RelativeLayout>
     </ScrollView>
