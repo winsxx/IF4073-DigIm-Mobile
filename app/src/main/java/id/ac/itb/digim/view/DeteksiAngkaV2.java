@@ -27,10 +27,12 @@ import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.BinaryColorType;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
+import id.ac.itb.digim.common.converter.ImageScaling;
 
 public class DeteksiAngkaV2 extends ActionBarActivity {
     private static final int RESULT_LOAD_IMG = 1;
     ImageMatrix<GreyscaleColor> mGreyscaleImageMatrix;
+    ImageMatrix<GreyscaleColor> mGreyscaleResizeImageMatrix;
     ImageMatrix<BinaryColor> mBinaryImageMatrix;
     ImageMatrix<BinaryColor> mBinaryFiveSquareImageMatrix;
     Bitmap imageBitmap;
@@ -71,7 +73,8 @@ public class DeteksiAngkaV2 extends ActionBarActivity {
                 imageBitmap = BitmapFactory.decodeFile(imgDecodableString);
 
                 mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
-                mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
+                mGreyscaleResizeImageMatrix = ImageScaling.bilinearResize(mGreyscaleImageMatrix, 5, 5);
+                mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleResizeImageMatrix);
                 imageView.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
                 mBinaryFiveSquareImageMatrix = ImageConverter.binaryToFiveSquareMatrix(mBinaryImageMatrix);
