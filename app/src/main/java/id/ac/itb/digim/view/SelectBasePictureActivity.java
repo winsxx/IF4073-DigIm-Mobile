@@ -66,6 +66,8 @@ public class SelectBasePictureActivity extends ActionBarActivity {
                 mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
 
+                //NOTE : harus disesuaiin sama yg manggil. cek DeteksiPlatActivity / DeteksiAngkaActivity
+                //TODO : bikin dua aja apa ya ntar / bikin bisa diganti2
                 List<Integer> chainCode = ChainCodeGenerator.generateChainCode(mBinaryImageMatrix, BinaryColorType.BLACK);
                 SharedPreferences.Editor editor = mPrefs.edit();
                 Gson gson = new Gson();

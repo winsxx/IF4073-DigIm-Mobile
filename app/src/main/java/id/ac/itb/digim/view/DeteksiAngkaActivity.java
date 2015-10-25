@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +31,7 @@ import id.ac.itb.digim.common.color.BinaryColorType;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
 
-
-public class ChainCodeActivity extends ActionBarActivity {
-
+public class DeteksiAngkaActivity extends ActionBarActivity {
     private static final int RESULT_LOAD_IMG = 1;
     ImageMatrix<GreyscaleColor> mGreyscaleImageMatrix;
     ImageMatrix<BinaryColor> mBinaryImageMatrix;
@@ -46,7 +43,7 @@ public class ChainCodeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chain_code);
+        setContentView(R.layout.activity_deteksi_angka);
         im = (ImageView) findViewById(R.id.imageView);
         mPrefs = getSharedPreferences("BASE_PICTURE", MODE_PRIVATE);
         list = new ArrayList<List<Double>>(10);
@@ -88,43 +85,32 @@ public class ChainCodeActivity extends ActionBarActivity {
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
                 im.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
-
-                List<List<Integer>> allChainCode = new ArrayList<List<Integer>>();
-                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix, BinaryColorType.BLACK, true);
-
-                String num = "";
-
-                Log.d("[ALL_CHAIN_CODE_SIZE]", String.valueOf(allChainCode.size()));
-
-                for (int idx = 0; idx < allChainCode.size(); idx++) {
-                    System.out.println("CC: [" + allChainCode.get(idx).size() + "] " + allChainCode.get(idx).toString());
-                    int min = Integer.MAX_VALUE;
-                    int number = 0;
-                    int result;
-
-                    for (int i = 0; i < 10; i++) {
-                        if (list.get(i) != null) {
-                            result = DiffChainCode.calcDiffDouble(allChainCode.get(idx), list.get(i));
-                            if (result < min) {
-                                min = result;
-                                number = i;
-                            }
+                //NOTE : cek SelectBasePicture, background sama chain code yang dipake harus sama
+                List<Integer> chainCode = ChainCodeGenerator.generateChainCode(mBinaryImageMatrix, BinaryColorType.WHITE);
+                Log.d("[CHAIN_CODE]", chainCode.toString());
+                int min = Integer.MAX_VALUE;
+                int number = 0;
+                int result;
+                for(int i=0; i<10; i++){
+                    if(list.get(i) != null) {
+                        result = DiffChainCode.calcDiffDouble(chainCode, list.get(i));
+                        if(result < min) {
+                            min = result;
+                            number = i;
                         }
-                    }
-
-                    if (min < 25) {
-                        System.out.println("Hasil tebakan num " + String.valueOf(number) + " min " + min);
-                        num += String.valueOf(number) + " ";
                     }
                 }
 
-                TextView numberText = (TextView) findViewById(R.id.textView2);
-                numberText.setText("Gambar diatas adalah angka " + num);
+                TextView numberText = (TextView) findViewById(R.id.angkaText);
+                numberText.setText("Angka " + Integer.toString(number));
+
+                TextView chainText = (TextView) findViewById(R.id.chainCodeText);
+                chainText.setText("Chain code " + chainCode);
 
             } else {
                 Toast.makeText(this, "Gambar belum dipilih", Toast.LENGTH_LONG).show();
             }
-        } catch (Exception ex) {
+        } catch (Exception ex){
             Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_LONG).show();
             ex.printStackTrace();
         }

@@ -28,14 +28,16 @@ import id.ac.itb.digim.common.color.BinaryColorType;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
 import id.ac.itb.digim.common.converter.ImageScaling;
+import id.ac.itb.digim.processor.smoother.MedianColorBlur;
 
 public class DeteksiAngkaV2 extends ActionBarActivity {
     private static final int RESULT_LOAD_IMG = 1;
     ImageMatrix<GreyscaleColor> mGreyscaleImageMatrix;
-    ImageMatrix<GreyscaleColor> mGreyscaleResizeImageMatrix;
+    ImageMatrix<GreyscaleColor> mGreyscaleBlurredImageMatrix;
     ImageMatrix<BinaryColor> mBinaryImageMatrix;
     ImageMatrix<BinaryColor> mBinaryFiveSquareImageMatrix;
     Bitmap imageBitmap;
+    List<List<Integer>> database;
 
     ImageView imageView;
     ImageView fiveSquareImageView;
@@ -47,6 +49,17 @@ public class DeteksiAngkaV2 extends ActionBarActivity {
         setContentView(R.layout.activity_deteksi_angka_v2);
         imageView = (ImageView) findViewById(R.id.imageView);
         fiveSquareImageView = (ImageView) findViewById(R.id.fiveSquareImageView);
+        database = new ArrayList<>();
+        database.add(getKode0());
+        database.add(getKode1());
+        database.add(getKode2());
+        database.add(getKode3());
+        database.add(getKode4());
+        database.add(getKode5());
+        database.add(getKode6());
+        database.add(getKode7());
+        database.add(getKode8());
+        database.add(getKode9());
     }
 
 
@@ -73,57 +86,39 @@ public class DeteksiAngkaV2 extends ActionBarActivity {
                 imageBitmap = BitmapFactory.decodeFile(imgDecodableString);
 
                 mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
-                mGreyscaleResizeImageMatrix = ImageScaling.bilinearResize(mGreyscaleImageMatrix, 5, 5);
-                mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleResizeImageMatrix);
+
+                mGreyscaleBlurredImageMatrix = MedianColorBlur.medianColorBlur(mGreyscaleImageMatrix,2);
+
+                mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleBlurredImageMatrix);
+
                 imageView.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
-                mBinaryFiveSquareImageMatrix = ImageConverter.binaryToFiveSquareMatrix(mBinaryImageMatrix);
+                mBinaryFiveSquareImageMatrix = ImageConverter.binaryToSquareMatrix(mBinaryImageMatrix);
                 fiveSquareImageView.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryFiveSquareImageMatrix));
 
-                /*
-                List<List<Integer>> allChainCode = new ArrayList<List<Integer>>();
-                allChainCode = ChainCodeGenerator.getAllChainCode(mBinaryImageMatrix, BinaryColorType.BLACK, true);
+                List<Integer> chainCode = ChainCodeGenerator.generateChainCode(mBinaryFiveSquareImageMatrix, BinaryColorType.WHITE);
 
-                int index = Integer.MAX_VALUE;
-
-                Log.d("[ALL_CHAIN_CODE_SIZE]", String.valueOf(allChainCode.size()));
-
-                for (int i = 0; i<allChainCode.size(); i++) {
-                    System.out.println("[CC] " + allChainCode.get(i).toString());
-                }
+                System.out.println("[CC] " + chainCode.toString());
 
                 int score = Integer.MAX_VALUE;
+                int min = Integer.MAX_VALUE;
+                int num = Integer.MAX_VALUE;
 
-                for (int idx = 0; idx < database.size(); idx++) {
-                    int curScore = Integer.MAX_VALUE;
-                    int distance;
-
-                    System.out.println("Data ke - " + idx);
-
-                    for (int i = 0; i<allChainCode.size(); i++) {
-                        if (allChainCode.get(i).size() < 5) {
-                            continue;
-                        }
-
-                        distance = DiffChainCode.editDistanceInt(allChainCode.get(i), database.get(idx));
-                        System.out.println("Untuk chain code : " + allChainCode.get(i) + " distancenya : " + distance);
-
-                        if (distance < curScore) {
-                            curScore = distance;
-                        }
+                for (int i=0; i<database.size(); i++) {
+                    if (database.get(i).size() > 0) {
+                        score = DiffChainCode.editDistanceInt(chainCode, database.get(i));
                     }
 
-                    if (curScore < score) {
-                        score = curScore;
-                        index = idx;
+                    if (min > score) {
+                        min = score;
+                        num = i;
                     }
                 }
 
-                System.out.println("index akhir: " + index + ";score akhir: " + score);
-
                 TextView numberText = (TextView) findViewById(R.id.textView2);
-                numberText.setText("Merek mobil : " + getMerk(index));
-                */
+                numberText.setText("Kode : " + chainCode.toString() + " angka: " + num);
+
+
             } else {
                 Toast.makeText(this, "Gambar belum dipilih", Toast.LENGTH_LONG).show();
             }
@@ -139,6 +134,74 @@ public class DeteksiAngkaV2 extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_deteksi_angka_v2, menu);
         return true;
+    }
+
+    public List<Integer> getKode0() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(1);
+        list.add(2);
+        return list;
+    }
+
+
+    public List<Integer> getKode1() {
+        List<Integer> list = new ArrayList<>();
+        return list;
+    }
+
+
+    public List<Integer> getKode2() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        return list;
+    }
+
+
+    public List<Integer> getKode3() {
+        List<Integer> list = new ArrayList<>();
+        list.add(2);
+        return list;
+    }
+
+
+    public List<Integer> getKode4() {
+        List<Integer> list = new ArrayList<>();
+        return list;
+    }
+
+
+    public List<Integer> getKode5() {
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(3);
+        list.add(3);
+        return list;
+    }
+
+
+    public List<Integer> getKode6() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        return list;
+    }
+
+
+    public List<Integer> getKode7() {
+        List<Integer> list = new ArrayList<>();
+        return list;
+    }
+
+    public List<Integer> getKode8() {
+        List<Integer> list = new ArrayList<>();
+        return list;
+    }
+
+
+    public List<Integer> getKode9() {
+        List<Integer> list = new ArrayList<>();
+        return list;
     }
 
 

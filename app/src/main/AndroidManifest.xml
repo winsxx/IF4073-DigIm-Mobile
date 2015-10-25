@@ -30,8 +30,8 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".view.ChainCodeActivity"
-            android:label="@string/title_activity_chain_code"
+            android:name=".view.DeteksiPlatActivity"
+            android:label="Deteksi Plat Mobil"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -49,6 +49,14 @@
         <activity
             android:name=".view.DeteksiAngkaV2"
             android:label="@string/title_activity_deteksi_angka_v2" >
+        </activity>
+        <activity
+            android:name=".view.ZhangSuenActivity"
+            android:label="@string/title_activity_zhang_suen" >
+        </activity>
+        <activity
+            android:name=".view.DeteksiAngkaActivity"
+            android:label="@string/title_activity_deteksi_angka" >
         </activity>
     </application>
 

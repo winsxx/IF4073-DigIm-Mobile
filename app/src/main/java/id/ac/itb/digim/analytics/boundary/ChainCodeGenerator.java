@@ -101,16 +101,6 @@ public class ChainCodeGenerator {
         return topLeftPositionResult;
     }
 
-    public static List<Integer> generateChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
-        FindObjectTopLeftPositionResult topLeftPosition = getAnObjectTopLeftPosition(imageMatrix, backgroundColor);
-        if (topLeftPosition.isFound()) {
-            return generateChainCode(imageMatrix, backgroundColor,
-                    topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
-        } else {
-            return null;
-        }
-    }
-
     private static boolean[][] generateObjectOfInterestMatrix(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
         int width = imageMatrix.getWidth();
         int height = imageMatrix.getHeight();
@@ -129,6 +119,20 @@ public class ChainCodeGenerator {
         }
 
         return image;
+    }
+
+    /**
+     * Generate chain code : untuk mendapatkan chain code normal dari imageMatrix
+     */
+
+    public static List<Integer> generateChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
+        FindObjectTopLeftPositionResult topLeftPosition = getAnObjectTopLeftPosition(imageMatrix, backgroundColor);
+        if (topLeftPosition.isFound()) {
+            return generateChainCode(imageMatrix, backgroundColor,
+                    topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
+        } else {
+            return null;
+        }
     }
 
     private static List<Integer> generateChainCode(ImageMatrix<BinaryColor> imageMatrix,
@@ -184,17 +188,11 @@ public class ChainCodeGenerator {
         return chainCode;
     }
 
-    public static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
-        return normalizeEightDirectionChainCode(generateChainCode(imageMatrix, backgroundColor));
-    }
-
-    private static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix,
-                                                             BinaryColorType backgroundColor,
-                                                             int objTopLeftRow,
-                                                             int objTopLeftCol) {
-        return normalizeEightDirectionChainCode(generateChainCode(imageMatrix, backgroundColor, objTopLeftRow, objTopLeftCol));
-    }
-
+    /**
+     * getAllChainCode : untuk mendapatkan chain code / kode belok dari gambar dengan banyak angka
+     * angka yang sudah didapatkan chain codenya akan dihapus
+     * apabila nilai normalized true hasil yang dikembalikan adalah kode belok yang telah dihaluskan
+     */
     public static List<List<Integer>> getAllChainCode(ImageMatrix<BinaryColor> imageMatrix,
                                                       BinaryColorType backgroundColor,
                                                       boolean normalized) {
@@ -210,7 +208,9 @@ public class ChainCodeGenerator {
             if (!normalized) {
                 oneChain = generateChainCode(image, topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
             } else {
-                oneChain = generateCoarseFourDirectionTurnChainCode(image, topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
+                //NOTE : buat plat mobil jelek kalo pake yg coarse
+                //oneChain = generateCoarseFourDirectionTurnChainCode(image, topLeftPosition.getTopRow(), topLeftPosition.getLeftCol());
+                oneChain = generateNormalizedChainCode(imageMatrix, backgroundColor);
             }
 
             allChainCode.add(oneChain);
@@ -223,6 +223,25 @@ public class ChainCodeGenerator {
         return allChainCode;
     }
 
+
+    /**
+     * generateNormalizedChainCode : menghasilkan kode belok dari image matrix
+     */
+    public static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix, BinaryColorType backgroundColor) {
+        return normalizeEightDirectionChainCode(generateChainCode(imageMatrix, backgroundColor));
+    }
+
+    private static List<Integer> generateNormalizedChainCode(ImageMatrix<BinaryColor> imageMatrix,
+                                                             BinaryColorType backgroundColor,
+                                                             int objTopLeftRow,
+                                                             int objTopLeftCol) {
+        return normalizeEightDirectionChainCode(generateChainCode(imageMatrix, backgroundColor, objTopLeftRow, objTopLeftCol));
+    }
+
+    /**
+     * normalized*ChainCode : menghasilkan kode belok dari chain code
+     * dengan cara menghitung perbedaan dari dua chain code yang berdekatan
+     */
     private static List<Integer> normalizeFourDirectionChainCode(List<Integer> chainCode) {
         if (chainCode == null) return null;
 
@@ -261,6 +280,10 @@ public class ChainCodeGenerator {
         return normalizedCC;
     }
 
+    /**
+     * generateCoarseFourDirectionTurnChainCode : mengubah chain code menjadi kode belok yang telah dihaluskan
+     * caranya : chain code -> dinormalisasi -> dihaluskan -> dihapus nol nya
+     */
     public static List<Integer> generateCoarseFourDirectionTurnChainCode(ImageMatrix<BinaryColor> imageMatrix,
                                                                          BinaryColorType backgroundColor) {
         FindObjectTopLeftPositionResult topLeftPosition = getAnObjectTopLeftPosition(imageMatrix, backgroundColor);
@@ -293,6 +316,10 @@ public class ChainCodeGenerator {
         return removeCodeZeroFromNormalizedChainCode(normalizedCoarseFourDirectionChainCode);
     }
 
+    /**
+     * getCoarseFourDirectionChainCode : menghaluskan nilai chain code dengan cara menggabungkan
+     * nilai dari tiga kode berdekatan menjadi satu kode
+     */
     private static List<Integer> getCoarseFourDirectionChainCode(List<Integer> detailChainCode) {
         int newChainCodeLength = detailChainCode.size() / CHAIN_CODE_COARSE_CONST;
         List<Integer> coarseChainCode = new ArrayList<>();
@@ -326,6 +353,9 @@ public class ChainCodeGenerator {
         return coarseChainCode;
     }
 
+    /**
+     * removeCodeZeroFormNormalizedChainCode : menghapus angka 0 pada kode belok (yang berarti arah lurus)
+     */
     private static List<Integer> removeCodeZeroFromNormalizedChainCode(List<Integer> normalizedChainCode) {
         List<Integer> newChainCode = new ArrayList<>();
         for (int i = 0; i < normalizedChainCode.size(); i++) {

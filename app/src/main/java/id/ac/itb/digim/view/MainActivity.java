@@ -20,7 +20,7 @@ public class MainActivity extends ActionBarActivity  {
     }
 
     public void toChainCode(View view) {
-        Intent i = new Intent(this, ChainCodeActivity.class);
+        Intent i = new Intent(this, DeteksiPlatActivity.class);
         startActivity(i);
     }
 
@@ -31,6 +31,16 @@ public class MainActivity extends ActionBarActivity  {
 
     public void toAngkaV2(View view) {
         Intent i = new Intent(this, DeteksiAngkaV2.class);
+        startActivity(i);
+    }
+
+    public void toAngka(View view) {
+        Intent i = new Intent(this, DeteksiAngkaActivity.class);
+        startActivity(i);
+    }
+
+    public void toZhangSuen(View view) {
+        Intent i = new Intent(this, ZhangSuenActivity.class);
         startActivity(i);
     }
 

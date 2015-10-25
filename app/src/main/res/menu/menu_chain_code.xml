@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="id.ac.itb.digim.view.ChainCodeActivity">
+    tools:context="id.ac.itb.digim.view.DeteksiPlatActivity">
     <item android:id="@+id/action_select_base_picture" android:title="Select Base Picture"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_load_data" android:title="Load Data"

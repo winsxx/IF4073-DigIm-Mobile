@@ -10,6 +10,7 @@ import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.color.RgbColor;
 
 public class ImageConverter {
+    private static final int squareSize = 5;
 
     public  static ImageMatrix<GreyscaleColor> bitmapToGreyscaleMatrix(Bitmap bitmap){
         int width = bitmap.getWidth();
@@ -59,22 +60,24 @@ public class ImageConverter {
         return result;
     }
 
-    public static ImageMatrix<BinaryColor>binaryToFiveSquareMatrix (
+    public static ImageMatrix<BinaryColor>binaryToSquareMatrix (
             ImageMatrix<BinaryColor> imageInput) {
 
-        System.out.println("SIZE GAMBAR- h" + imageInput.getHeight() + " w: " + imageInput.getWidth());
+        //System.out.println("SIZE GAMBAR- h" + imageInput.getHeight() + " w: " + imageInput.getWidth());
 
-        ImageMatrix<BinaryColor> fiveSquare = new ImageMatrix<>(BinaryColor.class, 5,5);
+        ImageMatrix<BinaryColor> square = new ImageMatrix<>(BinaryColor.class, squareSize,squareSize);
         BinaryColor black = new BinaryColor(); black.setBinaryColor(BinaryColorType.BLACK);
         BinaryColor white = new BinaryColor(); white.setBinaryColor(BinaryColorType.WHITE);
 
-        int height = imageInput.getHeight()/5;
-        int width = imageInput.getWidth()/5;
-        int sHeight = imageInput.getHeight()%5;
-        int sWidth = imageInput.getHeight()%5;
+        int height = imageInput.getHeight()/squareSize;
+        int width = imageInput.getWidth()/squareSize;
+        int sHeight = imageInput.getHeight()%squareSize;
+        int sWidth = imageInput.getHeight()%squareSize;
 
-        for (int i = 0 ; i< 5; i++) {
-            for (int j = 0; j< 5; j++) {
+        System.out.println("Size : " + imageInput.getHeight()+" " + imageInput.getWidth());
+
+        for (int i = 0 ; i< squareSize; i++) {
+            for (int j = 0; j< squareSize; j++) {
                 int numBlack = 0, numWhite = 0;
 
                 for (int in=0; in<height+(i<sHeight ? 1 : 0); in++) {
@@ -82,6 +85,8 @@ public class ImageConverter {
 
                         int rowB = (i<sHeight) ? i*(height+1)+in : sHeight*(height+1)+(i-sHeight)*height+in;
                         int colB = (j<sWidth) ? j*(width+1)+jn : sWidth*(width+1)+(j-sWidth)*width+jn;
+
+                        System.out.println("Row,Col " + rowB + " " + colB);
 
                         if (imageInput.getPixel(rowB, colB).getBinaryColor()==BinaryColorType.BLACK) {
                             numBlack=numBlack+1;
@@ -91,20 +96,17 @@ public class ImageConverter {
                     }
                 }
 
-                System.out.println("[i,j] : " + i + "," + j + " - " + numWhite + "," + numBlack);
+                //System.out.println("[i,j] : " + i + "," + j + " - " + numWhite + "," + numBlack);
 
-                if (numBlack >= 0.25*(numBlack+numWhite)) {
-                    fiveSquare.setPixel(i,j,black);
+                if (numBlack >= 0.3*(numBlack+numWhite)) {
+                    square.setPixel(i,j,black);
                 } else {
-                    fiveSquare.setPixel(i,j,white);
+                    square.setPixel(i,j,white);
                 }
             }
         }
-//
-//        for (int i = 0; i<5; i++) {
-//            for ()
-//        }
-        return fiveSquare;
+
+        return square;
     }
 
     public static Bitmap imageMatrixToBitmap(ImageMatrix matrix){
