@@ -137,31 +137,74 @@ public class DeteksiAngkaV2 extends ActionBarActivity {
     }
 
     public List<Integer> getKode0() {
+        //1, 0, 7, 6, 7, 5, 6, 5, 4, 3, 1, 2, 2, 3, 5, 6, 6
         List<Integer> list = new ArrayList<>();
         list.add(1);
+        list.add(0);
+        list.add(7);
+        list.add(6);
+        list.add(7);
+        list.add(5);
+        list.add(6);
+        list.add(5);
+        list.add(4);
+        list.add(3);
         list.add(1);
         list.add(2);
+        list.add(2);
+        list.add(3);
+        list.add(5);
+        list.add(6);
+        list.add(6);
         return list;
     }
 
 
     public List<Integer> getKode1() {
+        //[1, 5, 6, 6, 6, 6, 7, 1, 2, 2, 2, 2]
         List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(5);
+        list.add(6);
+        list.add(6);
+        list.add(6);
+        list.add(6);
+        list.add(7);
+        list.add(1);
+        list.add(2);
+        list.add(2);
+        list.add(2);
+        list.add(2);
         return list;
     }
 
 
     public List<Integer> getKode2() {
+//        [1, 0, 7, 5, 4, 3]
         List<Integer> list = new ArrayList<>();
         list.add(1);
-        list.add(2);
+        list.add(0);
+        list.add(7);
+        list.add(5);
+        list.add(4);
+        list.add(3);
         return list;
     }
 
 
     public List<Integer> getKode3() {
+        //[1, 5, 7, 1, 7, 6, 6, 5, 3, 3]
         List<Integer> list = new ArrayList<>();
-        list.add(2);
+        list.add(1);
+        list.add(5);
+        list.add(7);
+        list.add(1);
+        list.add(7);
+        list.add(6);
+        list.add(6);
+        list.add(5);
+        list.add(3);
+        list.add(3);
         return list;
     }
 
@@ -173,34 +216,101 @@ public class DeteksiAngkaV2 extends ActionBarActivity {
 
 
     public List<Integer> getKode5() {
+        //[1, 0, 7, 5, 7, 6, 6, 5, 4, 4, 3, 1, 0, 3, 3, 1]
         List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(0);
+        list.add(7);
+        list.add(5);
+        list.add(7);
+        list.add(6);
+        list.add(6);
+        list.add(5);
+        list.add(4);
+        list.add(4);
+        list.add(3);
+        list.add(1);
+        list.add(0);
         list.add(3);
         list.add(3);
-        list.add(3);
+        list.add(1);
         return list;
     }
 
 
     public List<Integer> getKode6() {
+        //[1, 5, 5, 6, 6, 7, 1]
         List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(5);
+        list.add(5);
+        list.add(6);
+        list.add(6);
+        list.add(7);
         list.add(1);
         return list;
     }
 
 
     public List<Integer> getKode7() {
+        //[1, 0, 0, 7, 6, 6, 5, 5, 3, 2, 1, 4, 3]
         List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(0);
+        list.add(0);
+        list.add(7);
+        list.add(6);
+        list.add(6);
+        list.add(5);
+        list.add(5);
+        list.add(3);
+        list.add(2);
+        list.add(1);
+        list.add(4);
+        list.add(3);
         return list;
     }
 
     public List<Integer> getKode8() {
+        //[1, 0, 0, 7, 6, 6, 7, 5, 5, 4, 4, 3, 2, 2, 2, 2]
         List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(0);
+        list.add(0);
+        list.add(7);
+        list.add(6);
+        list.add(6);
+        list.add(7);
+        list.add(5);
+        list.add(5);
+        list.add(4);
+        list.add(4);
+        list.add(3);
+        list.add(2);
+        list.add(2);
+        list.add(2);
+        list.add(2);
         return list;
     }
 
 
     public List<Integer> getKode9() {
+        //[1, 5, 5, 6, 7, 0, 5, 7, 1, 1, 2, 2, 3, 5]
         List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(5);
+        list.add(5);
+        list.add(6);
+        list.add(7);
+        list.add(0);
+        list.add(5);
+        list.add(7);
+        list.add(1);
+        list.add(1);
+        list.add(2);
+        list.add(2);
+        list.add(3);
+        list.add(5);
         return list;
     }
 

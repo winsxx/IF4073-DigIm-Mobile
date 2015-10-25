@@ -74,7 +74,7 @@ public class ImageConverter {
         int sHeight = imageInput.getHeight()%squareSize;
         int sWidth = imageInput.getHeight()%squareSize;
 
-        System.out.println("Size : " + imageInput.getHeight()+" " + imageInput.getWidth());
+        //System.out.println("Size : " + imageInput.getHeight()+" " + imageInput.getWidth());
 
         for (int i = 0 ; i< squareSize; i++) {
             for (int j = 0; j< squareSize; j++) {
@@ -86,7 +86,7 @@ public class ImageConverter {
                         int rowB = (i<sHeight) ? i*(height+1)+in : sHeight*(height+1)+(i-sHeight)*height+in;
                         int colB = (j<sWidth) ? j*(width+1)+jn : sWidth*(width+1)+(j-sWidth)*width+jn;
 
-                        System.out.println("Row,Col " + rowB + " " + colB);
+                        //System.out.println("Row,Col " + rowB + " " + colB);
 
                         if (imageInput.getPixel(rowB, colB).getBinaryColor()==BinaryColorType.BLACK) {
                             numBlack=numBlack+1;

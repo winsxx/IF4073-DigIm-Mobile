@@ -46,6 +46,17 @@ public class ZhangSuenActivity extends ActionBarActivity {
         setContentView(R.layout.activity_zhang_suen);
         imageView = (ImageView) findViewById(R.id.imageView);
         skeletonView = (ImageView) findViewById(R.id.skeletonView);
+        database = new ArrayList<>();
+        database.add(getKode0());
+        database.add(getKode1());
+        database.add(getKode2());
+        database.add(getKode3());
+        database.add(getKode4());
+        database.add(getKode5());
+        database.add(getKode6());
+        database.add(getKode7());
+        database.add(getKode8());
+        database.add(getKode9());
     }
 
     public void browseGallery(View view) {
@@ -71,37 +82,35 @@ public class ZhangSuenActivity extends ActionBarActivity {
                 imageBitmap = BitmapFactory.decodeFile(imgDecodableString);
 
                 mGreyscaleImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(imageBitmap);
-                //TODO : add median blur
-//                mGreyscaleResizeImageMatrix = ImageScaling.bilinearResize(mGreyscaleImageMatrix, 5, 5);
+
                 mBinaryImageMatrix = ImageConverter.greyscaleToBinaryMatrix(mGreyscaleImageMatrix);
                 imageView.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinaryImageMatrix));
 
                 mBinarySkeletonMatrix = ZhangSuenBinaryThinner.imageThinning(mBinaryImageMatrix, BinaryColorType.WHITE);
                 skeletonView.setImageBitmap(ImageConverter.imageMatrixToBitmap(mBinarySkeletonMatrix));
-//
-//                List<Integer> chainCode = new ArrayList<>();
-//                chainCode = ChainCodeGenerator.generateCoarseFourDirectionTurnChainCode(mBinaryFiveSquareImageMatrix, BinaryColorType.WHITE);
-//
-//                System.out.println("[CC] " + chainCode.toString());
-//
-//                int score = Integer.MAX_VALUE;
-//                int min = Integer.MAX_VALUE;
-//                int num = Integer.MAX_VALUE;
-//
-//                for (int i=0; i<database.size(); i++) {
-//                    if (database.get(i).size() > 0) {
-//                        score = DiffChainCode.editDistanceInt(chainCode, database.get(i));
-//                    }
-//
-//                    if (min > score) {
-//                        min = score;
-//                        num = i;
-//                    }
-//                }
-//
-//
-//                TextView numberText = (TextView) findViewById(R.id.textView2);
-//                numberText.setText("Kode : " + chainCode.toString() + " angka: " + num);
+
+                List<Integer> chainCode = new ArrayList<>();
+                chainCode = ChainCodeGenerator.generateCoarseFourDirectionTurnChainCode(mBinarySkeletonMatrix, BinaryColorType.WHITE);
+
+                System.out.println("[CC] " + chainCode.toString());
+
+                int score = Integer.MAX_VALUE;
+                int min = Integer.MAX_VALUE;
+                int num = Integer.MAX_VALUE;
+
+                for (int i=0; i<database.size(); i++) {
+                    if (database.get(i).size() > 0) {
+                        score = DiffChainCode.editDistanceInt(chainCode, database.get(i));
+                    }
+
+                    if (min > score) {
+                        min = score;
+                        num = i;
+                    }
+                }
+
+                TextView numberText = (TextView) findViewById(R.id.angkaText);
+                numberText.setText("Kode : " + chainCode.toString() + " angka: " + num);
 
 
             } else {
@@ -134,4 +143,112 @@ public class ZhangSuenActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    public List<Integer> getKode0() {
+        //[1, 1, 1, 3, 3, 3, 3, 1]
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(1);
+        list.add(1);
+        list.add(3);
+        list.add(3);
+        list.add(3);
+        list.add(3);
+        list.add(1);
+        return list;
+    }
+
+
+    public List<Integer> getKode1() {
+        //[2]
+        List<Integer> list = new ArrayList<>();
+        list.add(2);
+        return list;
+    }
+
+
+    public List<Integer> getKode2() {
+//        [3, 3, 1, 2, 3]
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(3);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        return list;
+    }
+
+
+    public List<Integer> getKode3() {
+        //[3,3,1,1]
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(3);
+        list.add(1);
+        list.add(1);
+        return list;
+    }
+
+
+    public List<Integer> getKode4() {
+        //1
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        return list;
+    }
+
+
+    public List<Integer> getKode5() {
+        //[3,3,1,1,3,3]
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(3);
+        list.add(1);
+        list.add(1);
+        list.add(3);
+        list.add(3);
+        return list;
+    }
+
+    public List<Integer> getKode6() {
+        //[2,1,1,2]
+        List<Integer> list = new ArrayList<>();
+        list.add(2);
+        list.add(1);
+        list.add(1);
+        list.add(2);
+        return list;
+    }
+
+    public List<Integer> getKode7() {
+        //[2]
+        List<Integer> list = new ArrayList<>();
+        list.add(2);
+        return list;
+    }
+
+    public List<Integer> getKode8() {
+        //[3,3,1,1,1,3]
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(3);
+        list.add(1);
+        list.add(1);
+        list.add(1);
+        list.add(3);
+        return list;
+    }
+
+    public List<Integer> getKode9() {
+        //[3,2,1,3]
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(2);
+        list.add(1);
+        list.add(2);
+        return list;
+    }
+
+
 }
