@@ -18,6 +18,7 @@ import id.ac.itb.digim.R;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
+import id.ac.itb.digim.processor.edging.EdgeDetection;
 
 public class EdgeDetectionActivity extends ActionBarActivity {
     private static final int RESULT_LOAD_IMG = 1;
@@ -94,10 +95,12 @@ public class EdgeDetectionActivity extends ActionBarActivity {
     }
 
     public void homogenEdgeDetection(View view) {
-        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mGreyscaleColorImageMatrix));
+        ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.homogenEdging(mGreyscaleColorImageMatrix);
+        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
     }
 
     public void differenceEdgeDetection(View view) {
-        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mGreyscaleColorImageMatrix));
+        ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.differenceEdging(mGreyscaleColorImageMatrix);
+        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
     }
 }
