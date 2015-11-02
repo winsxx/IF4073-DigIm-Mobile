@@ -1,8 +1,8 @@
 package id.ac.itb.digim.view;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
 import id.ac.itb.digim.R;
@@ -44,4 +44,8 @@ public class MainActivity extends ActionBarActivity  {
         startActivity(i);
     }
 
+    public void toEdgeDetection(View view) {
+        Intent i = new Intent(this, EdgeDetectionActivity.class);
+        startActivity(i);
+    }
 }

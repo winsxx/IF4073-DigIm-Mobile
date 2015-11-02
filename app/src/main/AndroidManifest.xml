@@ -58,6 +58,9 @@
             android:name=".view.DeteksiAngkaActivity"
             android:label="@string/title_activity_deteksi_angka" >
         </activity>
+        <activity
+            android:name=".view.EdgeDetectionActivity"
+            android:label="@string/title_activity_edge_detection"></activity>
     </application>
 
 </manifest>

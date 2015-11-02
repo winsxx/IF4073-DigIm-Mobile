@@ -14,5 +14,6 @@
     <string name="title_activity_deteksi_angka_v2">DeteksiAngkaV2</string>
     <string name="title_activity_zhang_suen">ZhangSuenActivity</string>
     <string name="title_activity_deteksi_angka">DeteksiAngkaActivity</string>
+    <string name="title_activity_edge_detection">Edge Detection</string>
 
 </resources>
