@@ -9,55 +9,75 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="id.ac.itb.digim.view.EdgeDetectionActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edge Detection"
-        android:textAlignment="inherit"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/galleryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:onClick="browseGallery"
-        android:text="Gallery" />
+        android:fillViewport="false"
+        android:scrollbars="vertical">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/homogenButton"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="homogenEdgeDetection"
-            android:text="Homogen" />
+            android:text="Edge Detection"
+            android:textAlignment="inherit"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/galleryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="browseGallery"
+            android:text="Gallery"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/galleryButton"
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/differenceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="differenceEdgeDetection"
-            android:text="Difference" />
-    </LinearLayout>
+            android:text="Difference"
+            android:layout_below="@+id/imageView" />
+
+        <Button
+            android:id="@+id/homogenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="homogenEdgeDetection"
+            android:text="Homogen"
+            android:layout_toRightOf="@+id/differenceButton"
+            android:layout_alignTop="@+id/differenceButton"
+            android:layout_marginLeft="10dp" />
 
 
-    <ImageView
-        android:id="@+id/resultImageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal" />
+        <ImageView
+            android:id="@+id/resultImageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true" />
 
+
+    </RelativeLayout>
+    </ScrollView>
 </LinearLayout>

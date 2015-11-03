@@ -12,7 +12,7 @@ public class EdgeDetection {
     public static ImageMatrix<GreyscaleColor> homogenEdging(ImageMatrix<GreyscaleColor> input) {
         int width = input.getWidth();
         int height = input.getHeight();
-
+        System.out.println(width + " " + height);
         ImageMatrix<GreyscaleColor> edgeMatrix = new ImageMatrix<GreyscaleColor>(GreyscaleColor.class,height,width);
 
         for (int i = 0; i < height; i++) {
@@ -22,11 +22,14 @@ public class EdgeDetection {
                 //List all surrounding value
                 int[] value = new int[8];
                 int idx = 0;
-                for (int iBox = i-1; iBox < i+1; iBox++) {
-                    for (int jBox = j-1; jBox < j+1; jBox++) {
-                        int x = Math.min(width - 1, Math.max(0, jBox));
-                        int y = Math.min(height - 1, Math.max(0, iBox));
-                        value[idx] = input.getPixel(y, x).getGrey();
+                for (int iBox = i-1; iBox <= i+1; iBox++) {
+                    for (int jBox = j-1; jBox <= j+1; jBox++) {
+                        if (iBox == i && jBox == j) {
+                            continue;
+                        }
+                        int row = Math.min(height - 1, Math.max(0, iBox));
+                        int col = Math.min(width - 1, Math.max(0, jBox));
+                        value[idx] = input.getPixel(row, col).getGrey();
                         idx++;
                     }
                 }
@@ -45,7 +48,6 @@ public class EdgeDetection {
                 edgeMatrix.setPixel(i, j, color);
             }
         }
-
         return edgeMatrix;
     }
 
@@ -62,11 +64,14 @@ public class EdgeDetection {
                 //List all surrounding value
                 int[] value = new int[8];
                 int idx = 0;
-                for (int iBox = i-1; iBox < i+1; iBox++) {
-                    for (int jBox = j-1; jBox < j+1; jBox++) {
-                        int x = Math.min(width - 1, Math.max(0, jBox));
-                        int y = Math.min(height - 1, Math.max(0, iBox));
-                        value[idx] = input.getPixel(y, x).getGrey();
+                for (int iBox = i-1; iBox <= i+1; iBox++) {
+                    for (int jBox = j-1; jBox <= j+1; jBox++) {
+                        if (iBox == i && jBox == j) {
+                            continue;
+                        }
+                        int row = Math.min(height - 1, Math.max(0, iBox));
+                        int col = Math.min(width - 1, Math.max(0, jBox));
+                        value[idx] = input.getPixel(row, col).getGrey();
                         idx++;
                     }
                 }

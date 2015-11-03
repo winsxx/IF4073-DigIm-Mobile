@@ -81,9 +81,9 @@ public class EdgeDetectionActivity extends ActionBarActivity {
                 cursor.close();
                 mImageBitmap = BitmapFactory.decodeFile(imgDecodableString);
 
-                mInputImage.setImageBitmap(mImageBitmap);
                 mGreyscaleColorImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(mImageBitmap);
-
+                System.out.println("Convert to greyscale done");
+                mInputImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mGreyscaleColorImageMatrix));
 
             } else {
                 Toast.makeText(this, "Gambar belum dipilih", Toast.LENGTH_LONG).show();
@@ -95,11 +95,13 @@ public class EdgeDetectionActivity extends ActionBarActivity {
     }
 
     public void homogenEdgeDetection(View view) {
+        System.out.println("Edging start... homogen...");
         ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.homogenEdging(mGreyscaleColorImageMatrix);
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
     }
 
     public void differenceEdgeDetection(View view) {
+        System.out.println("Edging start... difference...");
         ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.differenceEdging(mGreyscaleColorImageMatrix);
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
     }
