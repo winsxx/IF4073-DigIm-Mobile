@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.GreyscaleColor;
+import id.ac.itb.digim.processor.edging.convolution.ConvolutionMatrix;
 
 public class EdgeDetection {
 
