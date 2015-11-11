@@ -6,60 +6,60 @@ import java.util.List;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 
-public class RobinsonConvolutionKernel implements ConvolutionKernel{
+public class KirschConvolutionKernel implements ConvolutionKernel{
     private static final int MAT_SIZE = 3;
     private List<ConvolutionMatrix> _matrixList;
 
-    public RobinsonConvolutionKernel(){
+    public KirschConvolutionKernel(){
         _matrixList = new ArrayList<>();
         /**
-         * -1  0  1
-         * -2  0  2
-         * -1  0  1
+         * -3 -3  5
+         * -3  0  5
+         * -3 -3  5
          */
-        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{-1, 0, 1, -2, 0, 2, -1, 0, 1}));
+        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{-3, -3, 5, -3, 0, 5, -3, -3, 5}));
         /**
-         *  0  1  2
-         * -1  0  1
-         * -2 -1  0
+         * -3  5  5
+         * -3  0  5
+         * -3 -3 -3
          */
-        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{0, 1, 2, -1, 0, 1, -2, -1, 0}));
+        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{-3, 5, 5, -3, 0, 5, -3, -3, -3}));
         /**
-         *  1  2  1
-         *  0  0  0
-         * -1 -2 -1
+         *  5  5  5
+         * -3  0 -3
+         * -3 -3 -3
          */
-        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{1, 2, 1, 0, 0, 0, -1, -2, -1}));
+        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{5, 5, 5, -3, 0,-3, -3, -3, -3}));
         /**
-         *  2  1  0
-         *  1  0 -1
-         *  0 -1 -2
+         *  5  5 -3
+         *  5  0 -3
+         * -3 -3 -3
          */
-        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{2, 1, 0, 1, 0, -1, 0, -1, -2}));
+        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{5, 5, -3, 5, 0, -3, -3, -3, -3}));
         /**
-         *  1  0 -1
-         *  2  0 -2
-         *  1  0 -1
+         *  5 -3 -3
+         *  5  0 -3
+         *  5 -3 -3
          */
-        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{1, 0, -1, 2, 0, -2, 1, 0, -1}));
+        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{5, -3, -3, 5, 0, -3, 5, -3, -3}));
         /**
-         *  0 -1 -2
-         *  1  0 -1
-         *  2  1  0
+         * -3 -3 -3
+         *  5  0 -3
+         *  5  5 -3
          */
-        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{0, -1, -2, 1, 0, -1, 2, 1, 0}));
+        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{-3, -3, -3, 5, 0, -3, 5, 5, -3}));
         /**
-         * -1 -2 -1
-         *  0  0  0
-         *  1  2  1
+         * -3 -3 -3
+         * -3  0 -3
+         *  5  5  5
          */
-        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{-1, -2, -1, 0, 0, 0, 1, 2, 1}));
+        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{-3, -3, -3, -3, 0, -3, 5, 5, 5}));
         /**
-         * -2 -1  0
-         * -1  0  1
-         *  0  1  2
+         * -3 -3 -3
+         * -3  0  5
+         * -3  5  5
          */
-        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{-2, -1, 0, -1, 0, 1, 0, 1, 2}));
+        _matrixList.add(new ConvolutionMatrix(3, 3, new int[]{-3, -3, -3, -3, 0, 5, -3, 5, 5}));
     }
 
     @Override
@@ -83,7 +83,6 @@ public class RobinsonConvolutionKernel implements ConvolutionKernel{
                 }
             }
         }
-
         return newMatrix;
     }
 }

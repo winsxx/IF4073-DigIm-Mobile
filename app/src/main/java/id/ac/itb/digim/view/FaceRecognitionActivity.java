@@ -21,6 +21,7 @@ import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
 import id.ac.itb.digim.processor.clustering.KMeansCluster;
 import id.ac.itb.digim.processor.edging.EdgeDetection;
+import id.ac.itb.digim.processor.edging.convolution.KirschConvolutionKernel;
 import id.ac.itb.digim.processor.edging.convolution.RobertConvolutionKernel;
 import id.ac.itb.digim.processor.edging.convolution.RobinsonConvolutionKernel;
 import id.ac.itb.digim.processor.edging.convolution.SobelConvolutionKernel;
@@ -106,13 +107,15 @@ public class FaceRecognitionActivity extends ActionBarActivity {
 
     public void homogenEdgeDetection(View view) {
         System.out.println("Edging start... homogen...");
-        ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.homogenEdging(mGreyscaleColorImageMatrix);
+        //ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.homogenEdging(mGreyscaleColorImageMatrix);
+        ImageMatrix<GreyscaleColor> edgingResult = new SobelConvolutionKernel().convolve(mGreyscaleColorImageMatrix);
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
     }
 
     public void differenceEdgeDetection(View view) {
         System.out.println("Edging start... difference...");
-        ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.differenceEdging(mGreyscaleColorImageMatrix);
+        //ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.differenceEdging(mGreyscaleColorImageMatrix);
+        ImageMatrix<GreyscaleColor> edgingResult = new RobertConvolutionKernel().convolve(mGreyscaleColorImageMatrix);
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
     }
 
