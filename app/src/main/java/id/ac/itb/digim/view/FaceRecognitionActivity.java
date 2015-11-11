@@ -107,15 +107,13 @@ public class FaceRecognitionActivity extends ActionBarActivity {
 
     public void homogenEdgeDetection(View view) {
         System.out.println("Edging start... homogen...");
-        //ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.homogenEdging(mGreyscaleColorImageMatrix);
-        ImageMatrix<GreyscaleColor> edgingResult = new SobelConvolutionKernel().convolve(mGreyscaleColorImageMatrix);
+        ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.homogenEdging(mGreyscaleColorImageMatrix);
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
     }
 
     public void differenceEdgeDetection(View view) {
         System.out.println("Edging start... difference...");
-        //ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.differenceEdging(mGreyscaleColorImageMatrix);
-        ImageMatrix<GreyscaleColor> edgingResult = new RobertConvolutionKernel().convolve(mGreyscaleColorImageMatrix);
+        ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.differenceEdging(mGreyscaleColorImageMatrix);
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
     }
 
