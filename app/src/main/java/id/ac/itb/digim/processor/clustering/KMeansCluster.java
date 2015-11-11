@@ -9,6 +9,8 @@ import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.BinaryColorType;
 import id.ac.itb.digim.common.color.GreyscaleColor;
+import id.ac.itb.digim.common.color.RgbColor;
+import id.ac.itb.digim.common.color.RgbaColor;
 
 public class KMeansCluster {
     public List<Sample> centroids;
@@ -37,6 +39,16 @@ public class KMeansCluster {
             Sample centroid1 = samples.get(randIdx);
             centroids.add(centroid1);
         }
+
+//        Sample seed1 = new Sample(90, 125);
+//        centroids.add(seed1);
+//        Sample seed2 = new Sample(160, 125);
+//        centroids.add(seed2);
+//        Sample seed3 = new Sample(125, 165);
+//        centroids.add(seed3);
+//        Sample seed4 = new Sample(125, 200);
+//        centroids.add(seed4);
+
     }
 
     public List<Sample> performClustering() {
@@ -54,7 +66,9 @@ public class KMeansCluster {
                     curCluster = c;
                 }
             }
-            samples.get(idx).setCluster(curCluster);
+//            if (min < 5) {
+//                samples.get(idx).setCluster(curCluster);
+//            }
 
             //calculate new centroid
             for(int i = 0; i<centroids.size();i++) {
@@ -118,31 +132,43 @@ public class KMeansCluster {
         return samples;
     }
 
-    public ImageMatrix<GreyscaleColor> coloringCluster(List<Sample> samples, int height, int width) {
+    public ImageMatrix<RgbaColor> coloringCluster(List<Sample> samples, int height, int width) {
         System.out.println("Coloring cluster.....");
 
-        ImageMatrix<GreyscaleColor> imageMatrix = new ImageMatrix<GreyscaleColor>
-                                                                (GreyscaleColor.class, height, width);
-        GreyscaleColor grey1 = new GreyscaleColor();
-        grey1.setGrey(10);
-        GreyscaleColor grey2 = new GreyscaleColor();
-        grey2.setGrey(70);
-        GreyscaleColor grey3 = new GreyscaleColor();
-        grey3.setGrey(130);
-        GreyscaleColor grey4 = new GreyscaleColor();
-        grey4.setGrey(200);
+        ImageMatrix<RgbaColor> imageMatrix = new ImageMatrix<RgbaColor>
+                                                (RgbaColor.class, height, width);
+        RgbaColor red = new RgbaColor();
+        red.setRed(255);
+        red.setGreen(0);
+        red.setBlue(0);
+        red.setAlpha(255);
+        RgbaColor green = new RgbaColor();
+        green.setRed(0);
+        green.setGreen(255);
+        green.setBlue(0);
+        green.setAlpha(255);
+        RgbaColor blue = new RgbaColor();
+        blue.setRed(0);
+        blue.setGreen(0);
+        blue.setBlue(255);
+        blue.setAlpha(255);
+        RgbaColor yellow = new RgbaColor();
+        yellow.setRed(255);
+        yellow.setGreen(255);
+        yellow.setBlue(0);
+        yellow.setAlpha(255);
 
 
         for(int i = 0; i< samples.size(); i++) {
             Sample curSample = samples.get(i);
             if (curSample.getCluster() == 0) {
-                imageMatrix.setPixel(curSample.getX(), curSample.getY(), grey1);
+                imageMatrix.setPixel(curSample.getX(), curSample.getY(), red);
             } else if (curSample.getCluster() == 1) {
-                imageMatrix.setPixel(curSample.getX(), curSample.getY(), grey2);
+                imageMatrix.setPixel(curSample.getX(), curSample.getY(), green);
             } else if (curSample.getCluster() == 2) {
-                imageMatrix.setPixel(curSample.getX(), curSample.getY(), grey3);
+                imageMatrix.setPixel(curSample.getX(), curSample.getY(), blue);
             } else if (curSample.getCluster() == 3) {
-                imageMatrix.setPixel(curSample.getX(), curSample.getY(), grey4);
+                imageMatrix.setPixel(curSample.getX(), curSample.getY(), yellow);
             }
         }
         return imageMatrix;

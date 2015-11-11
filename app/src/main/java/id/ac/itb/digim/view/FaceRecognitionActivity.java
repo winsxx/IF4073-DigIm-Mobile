@@ -18,6 +18,8 @@ import id.ac.itb.digim.R;
 import id.ac.itb.digim.common.ImageMatrix;
 import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.GreyscaleColor;
+import id.ac.itb.digim.common.color.RgbColor;
+import id.ac.itb.digim.common.color.RgbaColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
 import id.ac.itb.digim.processor.clustering.KMeansCluster;
 import id.ac.itb.digim.processor.edging.EdgeDetection;
@@ -36,7 +38,7 @@ public class FaceRecognitionActivity extends ActionBarActivity {
     ImageMatrix<GreyscaleColor> mGreyscaleColorImageMatrix;
     ImageMatrix<BinaryColor> mBinaryColorMatrix;
     ImageMatrix<GreyscaleColor> mEdgingImageMatrix;
-    ImageMatrix<GreyscaleColor> mClusterImageMatrix;
+    ImageMatrix<RgbaColor> mClusterImageMatrix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +151,21 @@ public class FaceRecognitionActivity extends ActionBarActivity {
 
     public void robinsonEdge (View view) {
         RobinsonConvolutionKernel kernel = new RobinsonConvolutionKernel();
+        mEdgingImageMatrix = kernel.convolve(mGreyscaleColorImageMatrix);
+        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mEdgingImageMatrix));
+        System.out.println("Edging done");
+
+        mBinaryColorMatrix = ImageConverter.greyscaleToBinaryMatrix(mEdgingImageMatrix);
+        System.out.println("Convert to binary done");
+
+        KMeansCluster kmeans = new KMeansCluster(4, mBinaryColorMatrix);
+        mClusterImageMatrix = kmeans.coloringCluster(kmeans.performClustering(),
+                mBinaryColorMatrix.getHeight(), mBinaryColorMatrix.getWidth());
+        mClusterImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mClusterImageMatrix));
+    }
+
+    public void kirschEdge (View view) {
+        KirschConvolutionKernel kernel = new KirschConvolutionKernel();
         mEdgingImageMatrix = kernel.convolve(mGreyscaleColorImageMatrix);
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mEdgingImageMatrix));
         System.out.println("Edging done");
