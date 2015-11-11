@@ -59,8 +59,8 @@
             android:label="@string/title_activity_deteksi_angka" >
         </activity>
         <activity
-            android:name=".view.EdgeDetectionActivity"
-            android:label="@string/title_activity_edge_detection"></activity>
+            android:name=".view.FaceRecognitionActivity"
+            android:label="Face Recognition"></activity>
     </application>
 
 </manifest>

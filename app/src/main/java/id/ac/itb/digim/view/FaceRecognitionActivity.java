@@ -16,24 +16,34 @@ import android.widget.Toast;
 
 import id.ac.itb.digim.R;
 import id.ac.itb.digim.common.ImageMatrix;
+import id.ac.itb.digim.common.color.BinaryColor;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
+import id.ac.itb.digim.processor.clustering.KMeansCluster;
 import id.ac.itb.digim.processor.edging.EdgeDetection;
+import id.ac.itb.digim.processor.edging.convolution.RobertConvolutionKernel;
+import id.ac.itb.digim.processor.edging.convolution.RobinsonConvolutionKernel;
+import id.ac.itb.digim.processor.edging.convolution.SobelConvolutionKernel;
 
-public class EdgeDetectionActivity extends ActionBarActivity {
+public class FaceRecognitionActivity extends ActionBarActivity {
     private static final int RESULT_LOAD_IMG = 1;
 
     ImageView mInputImage;
     ImageView mResultImage;
+    ImageView mClusterImage;
     Bitmap mImageBitmap;
     ImageMatrix<GreyscaleColor> mGreyscaleColorImageMatrix;
+    ImageMatrix<BinaryColor> mBinaryColorMatrix;
+    ImageMatrix<GreyscaleColor> mEdgingImageMatrix;
+    ImageMatrix<GreyscaleColor> mClusterImageMatrix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edge_detection);
+        setContentView(R.layout.activity_face_recognition);
         mInputImage = (ImageView) findViewById(R.id.imageView);
         mResultImage = (ImageView) findViewById(R.id.resultImageView);
+        mClusterImage = (ImageView) findViewById(R.id.clusterImageView);
     }
 
 
@@ -82,8 +92,8 @@ public class EdgeDetectionActivity extends ActionBarActivity {
                 mImageBitmap = BitmapFactory.decodeFile(imgDecodableString);
 
                 mGreyscaleColorImageMatrix = ImageConverter.bitmapToGreyscaleMatrix(mImageBitmap);
-                System.out.println("Convert to greyscale done");
                 mInputImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mGreyscaleColorImageMatrix));
+
 
             } else {
                 Toast.makeText(this, "Gambar belum dipilih", Toast.LENGTH_LONG).show();
@@ -104,5 +114,50 @@ public class EdgeDetectionActivity extends ActionBarActivity {
         System.out.println("Edging start... difference...");
         ImageMatrix<GreyscaleColor> edgingResult = EdgeDetection.differenceEdging(mGreyscaleColorImageMatrix);
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(edgingResult));
+    }
+
+    public void sobelEdge(View view) {
+        SobelConvolutionKernel kernel = new SobelConvolutionKernel();
+        mEdgingImageMatrix = kernel.convolve(mGreyscaleColorImageMatrix);
+        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mEdgingImageMatrix));
+        System.out.println("Edging done");
+
+        mBinaryColorMatrix = ImageConverter.greyscaleToBinaryMatrix(mEdgingImageMatrix);
+        System.out.println("Convert to binary done");
+
+        KMeansCluster kmeans = new KMeansCluster(4, mBinaryColorMatrix);
+        mClusterImageMatrix = kmeans.coloringCluster(kmeans.performClustering(),
+                mBinaryColorMatrix.getHeight(), mBinaryColorMatrix.getWidth());
+        mClusterImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mClusterImageMatrix));
+    }
+
+    public void robertEdge (View view) {
+        RobertConvolutionKernel kernel = new RobertConvolutionKernel();
+        mEdgingImageMatrix = kernel.convolve(mGreyscaleColorImageMatrix);
+        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mEdgingImageMatrix));
+        System.out.println("Edging done");
+
+        mBinaryColorMatrix = ImageConverter.greyscaleToBinaryMatrix(mEdgingImageMatrix);
+        System.out.println("Convert to binary done");
+
+        KMeansCluster kmeans = new KMeansCluster(4, mBinaryColorMatrix);
+        mClusterImageMatrix = kmeans.coloringCluster(kmeans.performClustering(),
+                mBinaryColorMatrix.getHeight(), mBinaryColorMatrix.getWidth());
+        mClusterImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mClusterImageMatrix));
+    }
+
+    public void robinsonEdge (View view) {
+        RobinsonConvolutionKernel kernel = new RobinsonConvolutionKernel();
+        mEdgingImageMatrix = kernel.convolve(mGreyscaleColorImageMatrix);
+        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mEdgingImageMatrix));
+        System.out.println("Edging done");
+
+        mBinaryColorMatrix = ImageConverter.greyscaleToBinaryMatrix(mEdgingImageMatrix);
+        System.out.println("Convert to binary done");
+
+        KMeansCluster kmeans = new KMeansCluster(4, mBinaryColorMatrix);
+        mClusterImageMatrix = kmeans.coloringCluster(kmeans.performClustering(),
+                mBinaryColorMatrix.getHeight(), mBinaryColorMatrix.getWidth());
+        mClusterImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mClusterImageMatrix));
     }
 }

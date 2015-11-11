@@ -45,7 +45,7 @@ public class MainActivity extends ActionBarActivity  {
     }
 
     public void toEdgeDetection(View view) {
-        Intent i = new Intent(this, EdgeDetectionActivity.class);
+        Intent i = new Intent(this, FaceRecognitionActivity.class);
         startActivity(i);
     }
 }

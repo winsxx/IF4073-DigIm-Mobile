@@ -78,13 +78,13 @@
                 android:text="Zhang Suen" />
 
             <Button
-                android:id="@+id/edgeDetectButton"
+                android:id="@+id/faceRecognitionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/button10"
                 android:layout_centerHorizontal="true"
                 android:onClick="toEdgeDetection"
-                android:text="Edge Detection" />
+                android:text="Face Recognition" />
 
         </RelativeLayout>
     </ScrollView>

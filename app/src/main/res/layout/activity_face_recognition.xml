@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="id.ac.itb.digim.view.EdgeDetectionActivity">
+    tools:context="id.ac.itb.digim.view.FaceRecognitionActivity">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -27,7 +27,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edge Detection"
+            android:text="Face Recognition"
             android:textAlignment="inherit"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -48,7 +48,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_below="@+id/galleryButton"
             android:layout_centerHorizontal="true" />
-
+        <!--
         <Button
             android:id="@+id/differenceButton"
             android:layout_width="wrap_content"
@@ -66,8 +66,34 @@
             android:layout_toRightOf="@+id/differenceButton"
             android:layout_alignTop="@+id/differenceButton"
             android:layout_marginLeft="10dp" />
+        -->
+        <Button
+            android:id="@+id/sobelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="sobelEdge"
+            android:text="Sobel"
+            android:layout_below="@+id/imageView" />
 
+        <Button
+            android:id="@+id/robertButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="robertEdge"
+            android:text="Robert"
+            android:layout_toRightOf="@+id/sobelButton"
+            android:layout_alignTop="@+id/sobelButton"
+            android:layout_marginLeft="10dp" />
 
+        <Button
+            android:id="@+id/robinsonButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="robinsonEdge"
+            android:text="Robinson"
+            android:layout_toRightOf="@+id/robertButton"
+            android:layout_alignTop="@+id/robertButton"
+            android:layout_marginLeft="10dp" />
         <ImageView
             android:id="@+id/resultImageView"
             android:layout_width="150dp"
@@ -77,7 +103,16 @@
             android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true" />
 
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/clusterImageView"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/resultImageView"
+            android:layout_centerHorizontal="true" />
+
 
     </RelativeLayout>
     </ScrollView>
+
 </LinearLayout>
