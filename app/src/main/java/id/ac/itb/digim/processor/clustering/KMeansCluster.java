@@ -15,6 +15,8 @@ import id.ac.itb.digim.common.color.RgbaColor;
 public class KMeansCluster {
     public List<Sample> centroids;
     public List<Sample> samples;
+    private final int numIteration = 100;
+    private final int minDistance = 5;
 
     public KMeansCluster(int numCluster, ImageMatrix<BinaryColor> input) {
         System.out.println("Intialize sample... ");
@@ -32,22 +34,24 @@ public class KMeansCluster {
                 }
             }
         }
-        Random rand = new Random();
-        int randIdx;
-        for (int i = 0; i < numCluster; i++) {
-            randIdx = rand.nextInt(numSamples);
-            Sample centroid1 = samples.get(randIdx);
-            centroids.add(centroid1);
-        }
 
-//        Sample seed1 = new Sample(90, 125);
-//        centroids.add(seed1);
-//        Sample seed2 = new Sample(160, 125);
-//        centroids.add(seed2);
-//        Sample seed3 = new Sample(125, 165);
-//        centroids.add(seed3);
-//        Sample seed4 = new Sample(125, 200);
-//        centroids.add(seed4);
+        //init centroids
+//        Random rand = new Random();
+//        int randIdx;
+//        for (int i = 0; i < numCluster; i++) {
+//            randIdx = rand.nextInt(numSamples);
+//            Sample centroid1 = samples.get(randIdx);
+//            centroids.add(centroid1);
+//        }
+
+        Sample seed1 = new Sample(input.getHeight()/3, input.getWidth()/4); //mata kiri
+        centroids.add(seed1);
+        Sample seed2 = new Sample(input.getHeight()/3, 3*input.getWidth()/4); //mata kanan
+        centroids.add(seed2);
+        Sample seed3 = new Sample(3*input.getHeight()/5, input.getWidth()/2); //hidung
+        centroids.add(seed3);
+        Sample seed4 = new Sample(3*input.getHeight()/4, input.getWidth()/2);//mulut
+        centroids.add(seed4);
 
     }
 
@@ -56,6 +60,7 @@ public class KMeansCluster {
         double min;
         int curCluster = 0;
         boolean moving = true;
+        int iteration = 0;
 
         //assign sample ke centroid
         for(int idx=0; idx<samples.size(); idx++) {
@@ -66,27 +71,9 @@ public class KMeansCluster {
                     curCluster = c;
                 }
             }
-//            if (min < 5) {
-//                samples.get(idx).setCluster(curCluster);
-//            }
-
-            //calculate new centroid
-            for(int i = 0; i<centroids.size();i++) {
-                int totalX = 0;
-                int totalY = 0;
-                int totalInCluster = 0;
-                for(int j = 0; j < samples.size(); j++)
-                {
-                    if(samples.get(j).getCluster() == i){
-                        totalX += samples.get(j).getX();
-                        totalY += samples.get(j).getY();
-                        totalInCluster++;
-                    }
-                }
-                if(totalInCluster > 0){
-                    centroids.get(i).setX(totalX / totalInCluster);
-                    centroids.get(i).setY(totalY / totalInCluster);
-                }
+            System.out.println("min : " + min);
+            if (min < minDistance) {
+                samples.get(idx).setCluster(curCluster);
             }
         }
 
@@ -111,9 +98,7 @@ public class KMeansCluster {
             }
 
             //assign data to new centroid
-            moving = false;
             for(int i = 0; i<samples.size();i++) {
-                Sample tempSample = samples.get(i);
                 min = Integer.MAX_VALUE;
                 for(int c=0; c<centroids.size(); c++) {
                     if(distanceSample(samples.get(i),centroids.get(c)) < min) {
@@ -121,11 +106,16 @@ public class KMeansCluster {
                         curCluster = c;
                     }
                 }
-                samples.get(i).setCluster(curCluster);
-                if(tempSample.getCluster() != curCluster) {
-                    tempSample.setCluster(curCluster);
-                    moving = true;
+                System.out.println("min : "+min);
+                if (min < minDistance) {
+                    samples.get(i).setCluster(curCluster);
                 }
+            }
+
+            if (iteration >= numIteration) {
+                moving = false;
+            } else {
+                iteration++;
             }
         }
 

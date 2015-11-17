@@ -1,8 +1,8 @@
 package id.ac.itb.digim.processor.clustering;
 
 public class Sample {
-    private int x;
-    private int y;
+    private int x; //equivalent to height
+    private int y; //equivalent to width
     private int mCluster;
 
     public Sample() {

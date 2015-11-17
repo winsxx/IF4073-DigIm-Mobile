@@ -34,4 +34,9 @@ public class RgbColor extends Color {
         color = (color & 0xFFFFFF00) | b;
     }
 
+    public void setRGB(int r, int g, int b) {
+        setRed(r);
+        setGreen(g);
+        setBlue(b);
+    }
 }

@@ -42,4 +42,5 @@ public class RgbaColor extends Color {
         color = (color & 0xFFFFFF) | (a << 24);
     }
 
+
 }
