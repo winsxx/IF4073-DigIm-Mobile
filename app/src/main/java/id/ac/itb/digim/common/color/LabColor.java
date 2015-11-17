@@ -106,9 +106,10 @@ public class LabColor {
         int i = 0;
         while (!isSkin && i<skinDatabase.size()) {
             double dist = getColorDifference(color, skinDatabase.get(i));
-            System.out.println("dist : " + dist);
+            // System.out.println("dist : " + dist);
             if (dist < thresholdColor) {
                 isSkin = true;
+                break;
             } else {
                 i++;
             }

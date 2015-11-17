@@ -3,11 +3,18 @@ package id.ac.itb.digim.common.color;
 public class RgbColor extends Color {
 
     public RgbColor(){
-        super(0);
+        super(0xFF000000);
     }
 
     public RgbColor(int color) {
         super(color);
+    }
+
+    public RgbColor(int r, int g, int b){
+        super(0xFF000000);
+        setRed(r);
+        setGreen(g);
+        setBlue(b);
     }
 
     public int getRed() {

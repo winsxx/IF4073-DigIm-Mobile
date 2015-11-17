@@ -12,6 +12,22 @@ import id.ac.itb.digim.common.color.RgbColor;
 public class ImageConverter {
     private static final int squareSize = 5;
 
+    public  static ImageMatrix<RgbColor> bitmapToRgbMatrix(Bitmap bitmap){
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        ImageMatrix<RgbColor> rgbMatrix = new ImageMatrix<>(RgbColor.class, height, width);
+
+        for(int i=0; i<height; i++){
+            for(int j=0; j<width; j++){
+                RgbColor rgbColor = new RgbColor(bitmap.getPixel(j,i));
+                rgbMatrix.setPixel(i, j, rgbColor);
+            }
+        }
+        Log.i("[IMAGE_CONVERTER][BITMAP_TO_RGB]", "Bitmap to rgb done");
+        return rgbMatrix;
+    }
+
     public  static ImageMatrix<GreyscaleColor> bitmapToGreyscaleMatrix(Bitmap bitmap){
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();

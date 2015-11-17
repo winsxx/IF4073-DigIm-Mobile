@@ -104,18 +104,27 @@
             android:layout_below="@+id/sobelButton"
             android:layout_alignLeft="@id/sobelButton" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="faceDetection"
+            android:text="Detect"
+            android:id="@+id/detectButton"
+            android:layout_below="@+id/sobelButton"
+            android:layout_alignLeft="@id/robertButton"/>
+
         <ImageView
             android:id="@+id/resultImageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/kirschButton"
             android:layout_centerHorizontal="true" />
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/clusterImageView"
             android:layout_gravity="center_horizontal"
             android:layout_below="@+id/resultImageView"
