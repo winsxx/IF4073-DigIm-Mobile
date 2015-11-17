@@ -16,7 +16,7 @@ public class KMeansCluster {
     public List<Sample> centroids;
     public List<Sample> samples;
     private final int numIteration = 100;
-    private final int minDistance = 5;
+    private final int minDistance = 30;
 
     public KMeansCluster(int numCluster, ImageMatrix<BinaryColor> input) {
         System.out.println("Intialize sample... ");
@@ -71,7 +71,6 @@ public class KMeansCluster {
                     curCluster = c;
                 }
             }
-            System.out.println("min : " + min);
             if (min < minDistance) {
                 samples.get(idx).setCluster(curCluster);
             }
@@ -106,7 +105,7 @@ public class KMeansCluster {
                         curCluster = c;
                     }
                 }
-                System.out.println("min : "+min);
+                //System.out.println("min : "+min);
                 if (min < minDistance) {
                     samples.get(i).setCluster(curCluster);
                 }

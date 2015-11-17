@@ -14,7 +14,7 @@ public class Sample {
     public Sample(int x, int y) {
         this.x = x;
         this.y = y;
-        mCluster = 0;
+        mCluster = 99;
     }
 
     public int getX() {
