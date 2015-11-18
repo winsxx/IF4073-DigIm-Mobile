@@ -189,6 +189,7 @@ public class FaceRecognitionActivity extends ActionBarActivity {
 
     public void faceDetection(View view) {
         // TODO implement
+
         // Smoothing with gaussian blur
         ImageMatrix<GreyscaleColor> processedMatrix = GaussianBlur.gaussBlur(mGreyscaleColorImageMatrix, 1);
 

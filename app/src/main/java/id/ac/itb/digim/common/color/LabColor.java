@@ -95,18 +95,25 @@ public class LabColor {
         return Math.sqrt(Math.pow(lab2[0] - lab1[0], 2) + Math.pow(lab2[1] - lab1[1], 2) + Math.pow(lab2[2] - lab1[2], 2));
     }
 
+    public static double getDifference (RgbColor a, RgbColor b) {
+        return Math.sqrt(Math.pow(a.getRed()-b.getRed(), 2) + Math.pow(a.getGreen()-b.getGreen(), 2) + Math.pow(a.getBlue()-b.getBlue(), 2));
+    }
+
     public static boolean isSkinColor (RgbColor color) {
         List<RgbColor> skinDatabase = new ArrayList<RgbColor>();
-        RgbColor skin1 = new RgbColor();
-        skin1.setRGB(124,109,98); skinDatabase.add(skin1);
-        RgbColor skin2 = new RgbColor();
-        skin2.setRGB(125,113,87); skinDatabase.add(skin2);
+        //RgbColor skin1 = new RgbColor(124,109,98); skinDatabase.add(skin1); //2 baju yafi kena
+        //RgbColor skin2 = new RgbColor(125,113,87); skinDatabase.add(skin2); //2 baju atia kena
+        RgbColor skin3 = new RgbColor(84,71,60); skinDatabase.add(skin3); //1 aman tentram, 2 kena dikit
+        //RgbColor skin4 = new RgbColor(108,90,68); skinDatabase.add(skin4); //1 banyak di tangan tp aman, 2 banyak tangan baju atia kena dikit
+        //RgbColor skin5 = new RgbColor(104,91,85); skinDatabase.add(skin5); //1 baju pak iping kena, 2 baju yafi kena langit2 kena wajah engga
+        RgbColor skin6 = new RgbColor(151, 120, 102); skinDatabase.add(skin6); //1 ga ngaruh :v 2 dikit tp di wajah semua
+
 
         boolean isSkin = false;
         int i = 0;
         while (!isSkin && i<skinDatabase.size()) {
-            double dist = getColorDifference(color, skinDatabase.get(i));
-            // System.out.println("dist : " + dist);
+            double dist = getDifference(color, skinDatabase.get(i));
+            //System.out.println("dist : " + dist);
             if (dist < thresholdColor) {
                 isSkin = true;
                 break;
@@ -114,7 +121,6 @@ public class LabColor {
                 i++;
             }
         }
-
         return isSkin;
     }
 }
