@@ -188,21 +188,31 @@ public class FaceRecognitionActivity extends ActionBarActivity {
     }
 
     public void faceDetection(View view) {
-        // TODO implement
+        // Get RGB matrix
+        ImageMatrix<RgbColor> rgbColorImageMatrix = ImageConverter.bitmapToRgbMatrix(mImageBitmap);
+
+        ImageMatrix<GreyscaleColor> redMat = getGreysccaleFromRed(rgbColorImageMatrix);
+        ImageMatrix<GreyscaleColor> greenMat = getGreysccaleFromGreen(rgbColorImageMatrix);
+        ImageMatrix<GreyscaleColor> blueMat = getGreysccaleFromBlue(rgbColorImageMatrix);
 
         // Smoothing with gaussian blur
-        ImageMatrix<GreyscaleColor> processedMatrix = GaussianBlur.gaussBlur(mGreyscaleColorImageMatrix, 1);
+        redMat  = GaussianBlur.gaussBlur(redMat, 1);
+        greenMat  = GaussianBlur.gaussBlur(greenMat, 1);
+        blueMat  = GaussianBlur.gaussBlur(blueMat, 1);
 
         // Edge detection
         ConvolutionKernel kernel = new SobelConvolutionKernel();
-        mEdgingImageMatrix = kernel.convolve(processedMatrix);
+//        redMat = kernel.convolve(redMat);
+//        greenMat = kernel.convolve(greenMat);
+//        blueMat = kernel.convolve(blueMat);
+        mEdgingImageMatrix = combineMatrix(redMat, greenMat, blueMat);
+
         mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mEdgingImageMatrix));
 
         // Edge to binary
         mBinaryColorMatrix = ImageConverter.greyscaleToBinaryMatrix(mEdgingImageMatrix);
 
         // Make square to mark face and flood fill
-        ImageMatrix<RgbColor> rgbColorImageMatrix = ImageConverter.bitmapToRgbMatrix(mImageBitmap);
         boolean[][] marking = new boolean[rgbColorImageMatrix.getHeight()][rgbColorImageMatrix.getWidth()];
         for(int i=0; i<mBinaryColorMatrix.getHeight(); i++){
             for(int j=0; j<mBinaryColorMatrix.getWidth(); j++){
@@ -246,4 +256,77 @@ public class FaceRecognitionActivity extends ActionBarActivity {
         mClusterImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(rgbColorImageMatrix));
 
     }
+
+    private ImageMatrix<GreyscaleColor> getGreysccaleFromRed(ImageMatrix<RgbColor> imageMatrix){
+        ImageMatrix<GreyscaleColor> greyscaleImageMatrix = new ImageMatrix<GreyscaleColor>(
+                GreyscaleColor.class,
+                imageMatrix.getHeight(),
+                imageMatrix.getWidth());
+
+        for(int i=0; i<imageMatrix.getHeight(); i++){
+            for(int j=0; j<imageMatrix.getWidth(); j++){
+                GreyscaleColor color = new GreyscaleColor();
+                color.setGrey(imageMatrix.getPixel(i,j).getRed());
+                greyscaleImageMatrix.setPixel(i,j,color);
+            }
+        }
+        return greyscaleImageMatrix;
+    }
+
+    private ImageMatrix<GreyscaleColor> getGreysccaleFromGreen(ImageMatrix<RgbColor> imageMatrix){
+        ImageMatrix<GreyscaleColor> greyscaleImageMatrix = new ImageMatrix<GreyscaleColor>(
+                GreyscaleColor.class,
+                imageMatrix.getHeight(),
+                imageMatrix.getWidth());
+
+        for(int i=0; i<imageMatrix.getHeight(); i++){
+            for(int j=0; j<imageMatrix.getWidth(); j++){
+                GreyscaleColor color = new GreyscaleColor();
+                color.setGrey(imageMatrix.getPixel(i,j).getGreen());
+                greyscaleImageMatrix.setPixel(i,j,color);
+            }
+        }
+        return greyscaleImageMatrix;
+    }
+
+    private ImageMatrix<GreyscaleColor> getGreysccaleFromBlue(ImageMatrix<RgbColor> imageMatrix){
+        ImageMatrix<GreyscaleColor> greyscaleImageMatrix = new ImageMatrix<GreyscaleColor>(
+                GreyscaleColor.class,
+                imageMatrix.getHeight(),
+                imageMatrix.getWidth());
+
+        for(int i=0; i<imageMatrix.getHeight(); i++){
+            for(int j=0; j<imageMatrix.getWidth(); j++){
+                GreyscaleColor color = new GreyscaleColor();
+                color.setGrey(imageMatrix.getPixel(i,j).getBlue());
+                greyscaleImageMatrix.setPixel(i,j,color);
+            }
+        }
+        return greyscaleImageMatrix;
+    }
+
+    private ImageMatrix<GreyscaleColor> combineMatrix(
+            ImageMatrix<GreyscaleColor> redMat,
+            ImageMatrix<GreyscaleColor> greenMat,
+            ImageMatrix<GreyscaleColor> blueMat){
+
+        ImageMatrix<GreyscaleColor> matrix = new ImageMatrix<GreyscaleColor>(
+                GreyscaleColor.class,
+                redMat.getHeight(),
+                redMat.getWidth());
+
+        for(int i=0; i<matrix.getHeight(); i++){
+            for(int j=0; j<matrix.getWidth(); j++){
+                GreyscaleColor color = new GreyscaleColor();
+                int grey = Math.max(redMat.getPixel(i,j).getGrey(), greenMat.getPixel(i,j).getGrey());
+                grey = Math.max(grey, blueMat.getPixel(i,j).getGrey());
+                color.setGrey(grey);
+                matrix.setPixel(i,j,color);
+            }
+        }
+
+        return matrix;
+    }
+
+
 }
