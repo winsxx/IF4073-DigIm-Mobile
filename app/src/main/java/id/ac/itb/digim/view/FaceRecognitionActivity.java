@@ -15,14 +15,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import id.ac.itb.digim.R;
+import id.ac.itb.digim.analytics.boundary.Marker;
 import id.ac.itb.digim.common.ImageMatrix;
+import id.ac.itb.digim.common.Point;
 import id.ac.itb.digim.common.color.BinaryColor;
+import id.ac.itb.digim.common.color.BinaryColorType;
 import id.ac.itb.digim.common.color.GreyscaleColor;
 import id.ac.itb.digim.common.color.LabColor;
 import id.ac.itb.digim.common.color.RgbColor;
 import id.ac.itb.digim.common.color.RgbaColor;
 import id.ac.itb.digim.common.converter.ImageConverter;
 import id.ac.itb.digim.common.converter.ImageScaling;
+import id.ac.itb.digim.common.fill.FloodFill;
 import id.ac.itb.digim.processor.clustering.KMeansCluster;
 import id.ac.itb.digim.processor.edging.EdgeDetection;
 import id.ac.itb.digim.processor.edging.convolution.ConvolutionKernel;
@@ -185,25 +189,50 @@ public class FaceRecognitionActivity extends ActionBarActivity {
 
     public void faceDetection(View view) {
         // TODO implement
-        // Resize image width to 300px
-        double resizeRatio = 500.0/mGreyscaleColorImageMatrix.getWidth();
-        ImageMatrix<GreyscaleColor> processedMatrix =
-                ImageScaling.bilinearResize(mGreyscaleColorImageMatrix,
-                        (int) (resizeRatio * mGreyscaleColorImageMatrix.getWidth()),
-                        (int) (resizeRatio * mGreyscaleColorImageMatrix.getHeight()));
-
         // Smoothing with gaussian blur
-        processedMatrix = GaussianBlur.gaussBlur(processedMatrix, 2);
-        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(processedMatrix));
+        ImageMatrix<GreyscaleColor> processedMatrix = GaussianBlur.gaussBlur(mGreyscaleColorImageMatrix, 1);
 
         // Edge detection
-        //ConvolutionKernel kernel = new SobelConvolutionKernel();
-        //mEdgingImageMatrix = kernel.convolve(processedMatrix);
+        ConvolutionKernel kernel = new SobelConvolutionKernel();
+        mEdgingImageMatrix = kernel.convolve(processedMatrix);
+        mResultImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(mEdgingImageMatrix));
 
         // Edge to binary
-        //mBinaryColorMatrix = ImageConverter.greyscaleToBinaryMatrix(mEdgingImageMatrix);
+        mBinaryColorMatrix = ImageConverter.greyscaleToBinaryMatrix(mEdgingImageMatrix);
 
+        // Make square to mark face and flood fill
         ImageMatrix<RgbColor> rgbColorImageMatrix = ImageConverter.bitmapToRgbMatrix(mImageBitmap);
+        boolean[][] marking = new boolean[rgbColorImageMatrix.getHeight()][rgbColorImageMatrix.getWidth()];
+        for(int i=0; i<mBinaryColorMatrix.getHeight(); i++){
+            for(int j=0; j<mBinaryColorMatrix.getWidth(); j++){
+                if(mBinaryColorMatrix.getPixel(i,j).getBinaryColor() == BinaryColorType.WHITE){
+                    marking[i+1][j+1] = false;
+                } else {
+                    marking[i+1][j+1] = true;
+                }
+            }
+        }
+        for(int i=0; i<rgbColorImageMatrix.getHeight(); i++){
+            for(int j=0; j<rgbColorImageMatrix.getWidth(); j++){
+                if ((i==0) || (i==rgbColorImageMatrix.getHeight()) || (j==0) || (j==rgbColorImageMatrix.getWidth())){
+                    marking[i][j] = false;
+                }
+            }
+        }
+
+        for(int i=1; i<rgbColorImageMatrix.getHeight()-1; i++){
+            for(int j=1; j<rgbColorImageMatrix.getWidth()-1; j++){
+                RgbColor pixel = rgbColorImageMatrix.getPixel(i, j);
+                if(LabColor.isSkinColor(pixel) && marking[i][j]){
+                    Point topLeft = new Point(0,0);
+                    Point bottomRight = new Point(0,0);
+                    FloodFill.binaryFloodFill(marking, i, j, topLeft, bottomRight);
+                    Marker.boxMark(rgbColorImageMatrix, new RgbColor(255, 0, 0), topLeft, bottomRight, 2);
+                }
+            }
+        }
+
+        // Mark skin color
         for(int i=0; i<rgbColorImageMatrix.getHeight(); i++){
             for(int j=0; j<rgbColorImageMatrix.getWidth(); j++){
                 RgbColor pixel = rgbColorImageMatrix.getPixel(i, j);
@@ -212,6 +241,7 @@ public class FaceRecognitionActivity extends ActionBarActivity {
                 }
             }
         }
+
         mClusterImage.setImageBitmap(ImageConverter.imageMatrixToBitmap(rgbColorImageMatrix));
 
     }
