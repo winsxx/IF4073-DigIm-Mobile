@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="id.ac.itb.digim"
-    android:installLocation="internalOnly" >
+    android:installLocation="internalOnly">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -13,11 +13,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".view.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,40 +27,35 @@
         <activity
             android:name=".view.EqualizeActivity"
             android:label="@string/title_activity_equalize"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.DeteksiPlatActivity"
             android:label="Deteksi Plat Mobil"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.SelectBasePictureActivity"
-            android:label="@string/title_activity_select_base_picture" >
-        </activity>
+            android:label="@string/title_activity_select_base_picture"></activity>
         <activity
             android:name=".view.MerkMobilActivity"
-            android:label="@string/title_activity_merk_mobil" >
-        </activity>
+            android:label="@string/title_activity_merk_mobil"></activity>
         <activity
             android:name=".view.CekKodeBelokActivity"
-            android:label="@string/title_activity_cek_kode_belok" >
-        </activity>
+            android:label="@string/title_activity_cek_kode_belok"></activity>
         <activity
             android:name=".view.DeteksiAngkaV2"
-            android:label="@string/title_activity_deteksi_angka_v2" >
-        </activity>
+            android:label="@string/title_activity_deteksi_angka_v2"></activity>
         <activity
             android:name=".view.ZhangSuenActivity"
-            android:label="@string/title_activity_zhang_suen" >
-        </activity>
+            android:label="@string/title_activity_zhang_suen"></activity>
         <activity
             android:name=".view.DeteksiAngkaActivity"
-            android:label="@string/title_activity_deteksi_angka" >
-        </activity>
+            android:label="@string/title_activity_deteksi_angka"></activity>
         <activity
             android:name=".view.FaceRecognitionActivity"
-            android:label="Face Recognition"></activity>
+            android:label="Face Recognition" />
+        <activity
+            android:name=".view.FftActivity"
+            android:label="@string/title_activity_fft"></activity>
     </application>
 
 </manifest>

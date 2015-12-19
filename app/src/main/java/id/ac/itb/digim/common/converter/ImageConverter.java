@@ -107,9 +107,9 @@ public class ImageConverter {
                 }
 
                 if (numBlack >= 0.3*(numBlack+numWhite)) {
-                    square.setPixel(i,j,black);
+                    square.setPixel(i, j, black);
                 } else {
-                    square.setPixel(i,j,white);
+                    square.setPixel(i, j, white);
                 }
             }
         }
@@ -129,6 +129,34 @@ public class ImageConverter {
         }
 
         return bitmap;
+    }
+
+    public static double[][] greyscaleMatrixToDoubleMatrix(ImageMatrix<GreyscaleColor> matrix){
+        double output[][] = new double[matrix.getHeight()][matrix.getWidth()];
+        for(int i=0; i<matrix.getHeight(); i++){
+            for(int j=0; j<matrix.getWidth(); j++){
+                output[i][j] = (double) matrix.getPixel(i, j).getGrey();
+            }
+        }
+        return output;
+    }
+
+    public static ImageMatrix<GreyscaleColor> doubleMatrixToGreyscaleMatrix(double[][] matrix){
+        ImageMatrix<GreyscaleColor> greyscaleMatrix =
+                new ImageMatrix<GreyscaleColor>(GreyscaleColor.class, matrix.length, matrix[0].length);
+
+        for(int i=0; i<greyscaleMatrix.getHeight(); i++){
+            for(int j=0; j<greyscaleMatrix.getWidth(); j++){
+                GreyscaleColor color = new GreyscaleColor();
+                int temp = (int) Math.round(matrix[i][j]);
+                if (temp < 0) temp = 0;
+                if (temp > 255) temp = 255;
+                color.setGrey(temp);
+                greyscaleMatrix.setPixel(i, j, color);
+            }
+        }
+
+        return greyscaleMatrix;
     }
 
     private static int otsuThresholder(ImageMatrix<GreyscaleColor> imageMatrix) {

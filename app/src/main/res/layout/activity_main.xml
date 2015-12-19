@@ -86,6 +86,15 @@
                 android:onClick="toEdgeDetection"
                 android:text="Face Recognition" />
 
+            <Button
+                android:id="@+id/toFftButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/faceRecognitionButton"
+                android:layout_centerHorizontal="true"
+                android:onClick="toFftActivity"
+                android:text="FFT Processing" />
+
         </RelativeLayout>
     </ScrollView>
 

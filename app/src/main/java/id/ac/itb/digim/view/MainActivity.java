@@ -48,4 +48,9 @@ public class MainActivity extends ActionBarActivity  {
         Intent i = new Intent(this, FaceRecognitionActivity.class);
         startActivity(i);
     }
+
+    public void toFftActivity(View view) {
+        Intent i = new Intent(this, FftActivity.class);
+        startActivity(i);
+    }
 }
